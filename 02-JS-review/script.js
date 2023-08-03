@@ -142,3 +142,36 @@ function getBooks() {
 function getBook(id) {
   return data.find((d) => d.id === id);
 }
+
+///////////////////////////////////////////////
+// Destructuring
+const books = getBook(1);
+books;
+
+// using objects
+// variable name should be equal to property name
+const {author, title, genres} = books;
+console.log(author, title, genres)
+
+// arrays
+const [primaryGenre, secondaryGenre] = genres;
+console.log(primaryGenre, secondaryGenre);
+
+//rest operator
+//return value for the rest operator is an array 
+const [popularGenre, localGenre, ...otherGenre] = genres;
+console.log(popularGenre, localGenre, otherGenre );
+
+// spread operator
+// for array
+const newGenre = [...genres, 'gothic'];
+newGenre;
+
+// for objects
+const updatedBook = {
+  // if we want to get all the properties inside the object, we need to spread the object at first,
+  // so it will be overwritten from our desired properties
+  ...books, 
+  moviePublicationDate: '2001-12-12',
+   pages: 1210}
+updatedBook
