@@ -248,6 +248,16 @@ console.log(getTotalReviewCount(books));
 
 */
 
+function getTotalReviewCount(book) {
+  // checking if reviews exist? then checking goodreads exist?
+  const goodreads = book.reviews?.goodreads?.reviewsCount;
+
+  // checking if reviews exist? then checking goodreads exist? then setting all to default value of 0 once its undefined
+  const librarything = book.reviews?.librarything?.reviewsCount ?? 0;
+
+  return goodreads + librarything;
+}
+
 ///////////////////////////////////////////////////
 // 3 major functional arrays
 // dont mutate the original arrays, but creates new array
@@ -261,3 +271,13 @@ console.log(x);
 
 const titles = books.map((book) => book.title);
 titles;
+
+const essentialData = books.map((book) => ({
+  title: book.title,
+  author: book.author,
+  reviewsCount: getTotalReviewCount(book),
+}));
+
+essentialData;
+
+// filter method
