@@ -143,6 +143,7 @@ function getBook(id) {
   return data.find((d) => d.id === id);
 }
 
+/*
 ///////////////////////////////////////////////
 // Destructuring
 const books = getBook(2);
@@ -227,3 +228,36 @@ console.log(spanishTranslation);
 // nullish
 const count = books.reviews.librarything.reviewsCount ?? 'no data';
 count;
+
+///////////////////////////////////////////////////
+////Optional chaining
+// if we are unsure with chaining might not exist, we can always check using optional chaining
+// then we can also set default value using nullish
+
+function getTotalReviewCount(book) {
+  // checking if reviews exist? then checking goodreads exist?
+  const goodreads = book.reviews?.goodreads?.reviewsCount;
+
+  // checking if reviews exist? then checking goodreads exist? then setting all to default value of 0 once its undefined
+  const librarything = book.reviews?.librarything?.reviewsCount ?? 0;
+
+  return goodreads + librarything;
+}
+
+console.log(getTotalReviewCount(books));
+
+*/
+
+///////////////////////////////////////////////////
+// 3 major functional arrays
+// dont mutate the original arrays, but creates new array
+
+// map method
+const books = getBooks();
+books;
+
+const x = [1, 2, 3, 4, 5, 6, 7, 8].map((el) => el * 2);
+console.log(x);
+
+const titles = books.map((book) => book.title);
+titles;
