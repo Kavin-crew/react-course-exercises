@@ -48,13 +48,35 @@ const pizzaData = [
   },
 ];
 
+// this is where we call our components to render it in our page
 function App() {
   return (
     <>
-      <h1>Hello!</h1>
+      <Header />
+      <Menu />
+      <Footer />
+    </>
+  );
+}
+
+function Header() {}
+function Menu() {
+  return (
+    <>
+      <h2>Our Menu</h2>
+      <Pizza />
+      <Pizza />
       <Pizza />
     </>
   );
+}
+function Footer() {
+  return (
+    <footer>{new Date().toLocaleDateString()} We're currently open!</footer>
+  );
+
+  // the converted element from JSX
+  // return React.createElement("footer", null, "We're currently open!");
 }
 
 function Pizza() {
