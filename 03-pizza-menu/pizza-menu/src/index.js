@@ -68,16 +68,21 @@ function Header() {
     </header>
   );
 }
+
 function Menu() {
   return (
     <main className="menu">
       <h2>Our Menu</h2>
-      <Pizza />
-      <Pizza />
-      <Pizza />
+      <Pizza
+        name="Pizza Spinaci"
+        ingredients="Tomato, mozarella, spinach, and ricotta cheese"
+        photoName="pizzas/spinaci.jpg"
+        price={10}
+      />
     </main>
   );
 }
+
 function Footer() {
   const hour = new Date().getHours();
   const openHour = 12;
@@ -95,12 +100,13 @@ function Footer() {
   // return React.createElement("footer", null, "We're currently open!");
 }
 
-function Pizza() {
+function Pizza(props) {
   return (
     <div>
-      <img src="pizzas/spinaci.jpg" alt="Pizza" />
-      <h3>Pizza</h3>
+      <img src={props.photoName} alt={props.photoName} />
+      <h3>{props.name}</h3>
       <p>Bread with italian olive oil and rosemary</p>
+      <span>{props.price + 3}</span>
     </div>
   );
 }
