@@ -3,6 +3,8 @@ import ReactDOM from "react-dom/client";
 // before react v18
 // import ReactDOM from 'react-dom';
 
+import "./index.css";
+
 const pizzaData = [
   {
     name: "Focaccia",
@@ -51,28 +53,42 @@ const pizzaData = [
 // this is where we call our components to render it in our page
 function App() {
   return (
-    <>
+    <div className="container">
       <Header />
       <Menu />
       <Footer />
-    </>
+    </div>
   );
 }
 
-function Header() {}
+function Header() {
+  return (
+    <header className="header">
+      <h1>Fast React Pizza Co.</h1>
+    </header>
+  );
+}
 function Menu() {
   return (
-    <>
+    <main className="menu">
       <h2>Our Menu</h2>
       <Pizza />
       <Pizza />
       <Pizza />
-    </>
+    </main>
   );
 }
 function Footer() {
+  const hour = new Date().getHours();
+  const openHour = 12;
+  const closeHour = 22;
+  const isOpen = hour >= openHour && hour <= closeHour;
+  console.log(isOpen);
+
   return (
-    <footer>{new Date().toLocaleDateString()} We're currently open!</footer>
+    <footer className="footer">
+      {new Date().toLocaleDateString()} We're currently open!
+    </footer>
   );
 
   // the converted element from JSX
@@ -83,7 +99,7 @@ function Pizza() {
   return (
     <div>
       <img src="pizzas/spinaci.jpg" alt="Pizza" />
-      <h2>Pizza</h2>
+      <h3>Pizza</h3>
       <p>Bread with italian olive oil and rosemary</p>
     </div>
   );
