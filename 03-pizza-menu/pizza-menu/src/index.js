@@ -101,19 +101,18 @@ function Menu() {
 
 function Footer() {
   const hour = new Date().getHours();
-  const openHour = 5;
+  const openHour = 0;
   const closeHour = 22;
   const isOpen = hour >= openHour && hour <= closeHour;
   console.log(isOpen);
+
+  // if (!isOpen) return <p>Closed</p>;
 
   return (
     <footer className="footer">
       {/* conditional rendering */}
       {isOpen ? (
-        <div className="order">
-          <p>We're open until {closeHour}:00. Come visit us or order online.</p>
-          <button className="btn">Order</button>
-        </div>
+        <Order closeHour={closeHour} />
       ) : (
         <p>
           We're happy to welcome you between {openHour}:00 and {closeHour}:00
@@ -126,14 +125,25 @@ function Footer() {
   // return React.createElement("footer", null, "We're currently open!");
 }
 
-function Pizza(props) {
+function Order({ closeHour }) {
+  return (
+    <div className="order">
+      <p>We're open until {closeHour}:00. Come visit us or order online.</p>
+      <button className="btn">Order</button>
+    </div>
+  );
+}
+
+function Pizza({ pizzaObj }) {
+  if (pizzaObj.soldOut) return null;
+
   return (
     <li className="pizza">
-      <img src={props.pizzaObj.photoName} alt={props.pizzaObj.photoName} />
+      <img src={pizzaObj.photoName} alt={pizzaObj.photoName} />
       <div>
-        <h3>{props.pizzaObj.name}</h3>
-        <p>{props.pizzaObj.ingredients}</p>
-        <span>{props.pizzaObj.price + 3}</span>
+        <h3>{pizzaObj.name}</h3>
+        <p>{pizzaObj.ingredients}</p>
+        <span>{pizzaObj.price + 3}</span>
       </div>
     </li>
   );
