@@ -22,17 +22,24 @@ const initialFriends = [
 ];
 
 export default function App() {
+  const [friends, setFriends] = useState(initialFriends);
   const [showAddFriend, setShowAddFriend] = useState(false);
 
   function handleShowAddFriend() {
     setShowAddFriend(show => !show);
   }
 
+  function handleAddFriend(newFriend) {
+    setFriends(friends => [...friends, newFriend]);
+    // to hide for after adding new friend
+    setShowAddFriend(false);
+  }
+
   return (
     <div className="app">
       <div className="sidebar">
-        <FriendList />
-        {showAddFriend && <FormAddFriend />}
+        <FriendList friends={friends} />
+        {showAddFriend && <FormAddFriend onAddFriend={handleAddFriend} />}
         <Button onClick={handleShowAddFriend}>
           {showAddFriend ? 'Close' : 'Add friend'}
         </Button>
@@ -42,10 +49,10 @@ export default function App() {
   );
 }
 
-function FriendList() {
+function FriendList({ friends }) {
   return (
     <ul>
-      {initialFriends.map(friend => (
+      {friends.map(friend => (
         <Friend friend={friend} key={friend.id} />
       ))}
     </ul>
@@ -88,18 +95,25 @@ function Button({ children, onClick }) {
   );
 }
 
-function FormAddFriend() {
+function FormAddFriend({ onAddFriend }) {
   const [name, setName] = useState('');
   const [image, setImage] = useState('https://i.pravatar.cc/48?u=499476');
 
   function handleSubmit(e) {
     e.preventDefault();
 
+    if (!name || !image) return;
+
     const id = crypto.randomUUID();
 
+    // ${image}?=${id} means every image will have a unique id that will be generated online
     const newFriend = { id, name, image: `${image}?=${id}`, balance: 0 };
 
+    onAddFriend(newFriend);
     console.log(newFriend);
+
+    setName('');
+    setImage('https://i.pravatar.cc/48?u=499476');
   }
 
   return (
