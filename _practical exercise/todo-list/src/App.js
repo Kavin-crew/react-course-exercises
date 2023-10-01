@@ -22,19 +22,16 @@ const initialTask = [
 
 export default function App() {
   const [toDo, setToDo] = useState(initialTask);
-  const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [selectedTodo, setSelectedTodo] = useState(null);
 
   function handleAddTodo(newToDo) {
     setToDo(toDos => [...toDos, newToDo]);
+    setSelectedTodo(null);
   }
 
   function handleDeleteTodo(id) {
     setToDo(todos => todos.filter(todo => todo.id !== id));
-  }
-
-  function handleShowForm() {
-    setShowUpdateForm(show => !show);
+    setSelectedTodo(null);
   }
 
   function handleSelection(todo) {
@@ -50,10 +47,6 @@ export default function App() {
     );
   }
 
-  // function handleSelectedTodo(todo) {
-  //   setSelectedTodo(selected => (selected?.id === todo.id ? null : todo));
-  // }
-
   return (
     <div className="app">
       <div className="container">
@@ -62,7 +55,6 @@ export default function App() {
         <TodoList
           toDo={toDo}
           onDeleteToDo={handleDeleteTodo}
-          onShowUpdateForm={handleShowForm}
           onSelection={handleSelection}
         />
       </div>
@@ -70,7 +62,6 @@ export default function App() {
         <FormUpdateTodo
           selectedTodo={selectedTodo}
           setSelectedTodo={setSelectedTodo}
-          onShowUpdateForm={handleShowForm}
           onUpdateTodo={handleUpdateTodo}
         />
       )}
@@ -111,7 +102,7 @@ function TaskToDo({ onAddToDo }) {
   );
 }
 
-function TodoList({ toDo, onDeleteToDo, onShowUpdateForm, onSelection }) {
+function TodoList({ toDo, onDeleteToDo, onSelection }) {
   return (
     <ul className="list">
       {toDo.map(todo => (
@@ -119,7 +110,6 @@ function TodoList({ toDo, onDeleteToDo, onShowUpdateForm, onSelection }) {
           todo={todo}
           key={todo.id}
           onDeleteToDo={onDeleteToDo}
-          onShowUpdateForm={onShowUpdateForm}
           onSelection={onSelection}
         />
       ))}
@@ -127,32 +117,18 @@ function TodoList({ toDo, onDeleteToDo, onShowUpdateForm, onSelection }) {
   );
 }
 
-function ToDo({ todo, onDeleteToDo, onShowUpdateForm, onSelection }) {
+function ToDo({ todo, onDeleteToDo, onSelection }) {
   return (
     <li className="todo__item">
       <span>{todo.text}</span>
-      <button
-        onClick={() => {
-          onSelection(todo);
-          onShowUpdateForm();
-        }}
-      >
-        📝
-      </button>
-      <button
-        onClick={() => {
-          onDeleteToDo(todo.id);
-          onShowUpdateForm(false);
-        }}
-      >
-        ❌
-      </button>
+      <button onClick={() => onSelection(todo)}>📝</button>
+      <button onClick={() => onDeleteToDo(todo.id)}>❌</button>
     </li>
   );
 }
 
 function FormUpdateTodo({ selectedTodo, onUpdateTodo, setSelectedTodo }) {
-  const [updatedTodo, setUpdatedTodo] = useState(selectedTodo?.text);
+  const [updatedTodo, setUpdatedTodo] = useState(selectedTodo.text);
 
   function handleUpdateTodo(e) {
     e.preventDefault();
