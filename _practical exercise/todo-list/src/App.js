@@ -38,12 +38,8 @@ export default function App() {
   }
 
   function handleSelection(todo) {
-    // setSelectedFriend(friend);
-
     // if selected id is null, we can do optional chaining to check if selected does exist
     setSelectedTodo(selected => (selected?.id === todo.id ? null : todo));
-
-    setShowUpdateForm(false);
   }
 
   function handleUpdateTodo(updatedTodo) {
@@ -60,17 +56,20 @@ export default function App() {
 
   return (
     <div className="app">
-      <Header />
-      <TaskToDo onAddToDo={handleAddTodo} />
-      <TodoList
-        toDo={toDo}
-        onDeleteToDo={handleDeleteTodo}
-        onShowUpdateForm={handleShowForm}
-        onSelection={handleSelection}
-      />
-      {showUpdateForm && (
+      <div className="container">
+        <Header />
+        <TaskToDo onAddToDo={handleAddTodo} />
+        <TodoList
+          toDo={toDo}
+          onDeleteToDo={handleDeleteTodo}
+          onShowUpdateForm={handleShowForm}
+          onSelection={handleSelection}
+        />
+      </div>
+      {selectedTodo && (
         <FormUpdateTodo
           selectedTodo={selectedTodo}
+          setSelectedTodo={setSelectedTodo}
           onShowUpdateForm={handleShowForm}
           onUpdateTodo={handleUpdateTodo}
         />
@@ -152,18 +151,18 @@ function ToDo({ todo, onDeleteToDo, onShowUpdateForm, onSelection }) {
   );
 }
 
-function FormUpdateTodo({ selectedTodo, onShowUpdateForm, onUpdateTodo }) {
+function FormUpdateTodo({ selectedTodo, onUpdateTodo, setSelectedTodo }) {
   const [updatedTodo, setUpdatedTodo] = useState(selectedTodo?.text);
 
   function handleUpdateTodo(e) {
     e.preventDefault();
     onUpdateTodo(updatedTodo);
-    setUpdatedTodo('');
-    onShowUpdateForm(false);
+    setUpdatedTodo(updatedTodo);
+    setSelectedTodo(null);
   }
   return (
     <form onSubmit={handleUpdateTodo}>
-      <span onClick={() => onShowUpdateForm(false)}>❌</span>
+      <span onClick={() => setSelectedTodo(null)}>❌</span>
       <input
         type="text"
         value={updatedTodo}
