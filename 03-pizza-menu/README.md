@@ -1,3 +1,3 @@
-# Getting Started with Create React App
+# To view the react exercises, you may check it on my codesandbox too.
 
 <a href="https://codesandbox.io/s/03-pizza-menu-z8q3y7?file=/src/App.js" target="_blank">View on codesandbox</a>
