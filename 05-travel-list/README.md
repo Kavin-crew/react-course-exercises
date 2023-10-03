@@ -1,3 +1,6 @@
+# Eyes here... open on sandbox to view live version
+<a href="https://codesandbox.io/s/05-travel-list-z8tzps" target="_blank">View on codesandbox</a>
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
