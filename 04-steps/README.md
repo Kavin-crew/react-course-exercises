@@ -1,5 +1,6 @@
-# To view the react exercises, you may check it on my codesandbox too.
-<a href="https://codesandbox.io/s/04-steps-p7gtjg" target="_blank">View on codesandbox</a>
+# Eyes here... open on sandbox to view live version
+<a href="https://codesandbox.io/s/04-steps-p7gtjg?file=/src/styles.css" target="_blank">View on codesandbox</a>
+
 
 # Getting Started with Create React App
 
