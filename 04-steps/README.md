@@ -1,3 +1,6 @@
+# To view the react exercises, you may check it on my codesandbox too.
+<a href="https://codesandbox.io/s/04-steps-p7gtjg" target="_blank">View on codesandbox</a>
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
