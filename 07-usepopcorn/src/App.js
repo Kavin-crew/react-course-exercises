@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import StarRating from './StartRating';
 
 const tempMovieData = [
   {
@@ -63,6 +64,7 @@ export default function App() {
       <Main>
         <Box>
           <MovieList movies={movies} />
+          <StarRating />
         </Box>
         <Box>
           <WatchedSummary watched={watched} />
