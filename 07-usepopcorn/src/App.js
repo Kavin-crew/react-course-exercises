@@ -64,7 +64,11 @@ export default function App() {
       <Main>
         <Box>
           <MovieList movies={movies} />
-          <StarRating />
+          <StarRating defaultRating={3} />
+          <StarRating
+            messages={['Terrible', 'Bad', 'Good', 'Okay', 'Amazing']}
+            defaultRating={3}
+          />
         </Box>
         <Box>
           <WatchedSummary watched={watched} />
