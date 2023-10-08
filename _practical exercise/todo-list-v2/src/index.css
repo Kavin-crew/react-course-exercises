@@ -1,0 +1,67 @@
+:root {
+  --font-primary: 'Open Sans', sans-serif;
+  --default-font-size: 1.8rem;
+
+  --default-line-height: 33px;
+  --default-font-weight: 400;
+
+  --color-primary: #002838;
+
+  --color-gray-1: #292929;
+  --color-gray-2: #e9e9e9;
+  --color-gray-3: #1a1a1a;
+  --color-gray-4: #f1f1f1;
+  --color-gray-5: #69665c;
+
+  --color-blue-1: #002838;
+  --color-blue-2: #0076dc;
+  --color-blue-3: #0ecad4;
+  --color-blue-4: #6a92b8;
+  --color-blue-5: #66adea;
+
+  --color-purple-1: #8f75ef;
+  --color-purple-2: #231756;
+  --color-purple-3: #e6dffd;
+
+  --color-white: #fff;
+
+  --text-stroke: rgb(186, 186, 186) 1px 0px 0px,
+    rgb(186, 186, 186) 0.540302px 0.841471px 0px,
+    rgb(186, 186, 186) -0.416147px 0.909297px 0px,
+    rgb(186, 186, 186) -0.989993px 0.14112px 0px,
+    rgb(186, 186, 186) -0.653644px -0.756803px 0px,
+    rgb(186, 186, 186) 0.283662px -0.958924px 0px,
+    rgb(186, 186, 186) 0.96017px -0.279416px 0px;
+}
+
+body {
+  font-family: var(--font-primary);
+  line-height: var(--default-line-height);
+  font-weight: var(--default-font-weight);
+  color: var(--color-gray-5);
+  font-size: var(--default-font-size);
+
+  background: radial-gradient(
+        circle,
+        transparent 20%,
+        #9a55d1 20%,
+        #9a55d1 80%,
+        transparent 80%,
+        transparent
+      )
+      0% 0% / 98px 98px,
+    radial-gradient(
+        circle,
+        transparent 20%,
+        #9a55d1 20%,
+        #9a55d1 80%,
+        transparent 80%,
+        transparent
+      )
+      49px 49px / 98px 98px,
+    linear-gradient(#0fc6f2 2.5px, transparent 2.5px) 0px -1.25px / 49px 49px,
+    linear-gradient(90deg, #0fc6f2 2.5px, #9a55d1 2.5px) -1.25px 0px / 49px 49px
+      #9a55d1;
+  background-size: 98px 98px, 98px 98px, 49px 49px, 49px 49px;
+  background-color: #9a55d1;
+}
