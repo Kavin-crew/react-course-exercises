@@ -36,108 +36,143 @@ const initialTask = [
   },
 ];
 
+const initialTags = [
+  {
+    id: '1',
+    text: 'Work',
+    color: '#0076dc',
+  },
+  {
+    id: '2',
+    text: 'Family',
+    color: '#0ecad4',
+  },
+  {
+    id: '3',
+    text: 'Study',
+    color: '#6a92b8',
+  },
+  {
+    id: '4',
+    text: 'Hobby',
+    color: '#66adea',
+  },
+  {
+    id: '5',
+    text: 'Others',
+    color: '#8f75ef',
+  },
+];
+
 export default function App() {
   return (
     <div className="container">
-      <header className="header">
-        <h1>todo</h1>
-        <button className="btn">
-          <span role="button" aria-label="plus">
-            ➕
-          </span>
-        </button>
-      </header>
-      <aside className="sidebar">
-        <ul className="tag__list">
-          <li className="tag__item">
-            <button className="btn">
-              <span>&nbsp;</span> work
-            </button>
-          </li>
-          <li className="tag__item">
-            <button className="btn">
-              <span>&nbsp;</span> study
-            </button>
-          </li>
-          <li className="tag__item">
-            <button className="btn">
-              <span>&nbsp;</span> entertainment
-            </button>
-          </li>
-          <li className="tag__item">
-            <button className="btn">
-              <span>&nbsp;</span> family
-            </button>
-          </li>
-          <li className="tag__item">
-            <button className="btn">
-              <span>&nbsp;</span> work
-            </button>
-          </li>
-          <li className="tag__item">
-            <input type="checkbox" name="done-task" />
-            <label htmlFor="done-task">Hide Done Tasks</label>
-          </li>
-        </ul>
-      </aside>
-      <main className="main">
-        <section className="main__content">
-          <h2>The First task title</h2>
-          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
-          <div className="content__tags">
-            <ul className="content__tags_list">
-              <li className="content__tag">
-                <span>&nbsp;</span>
-              </li>
-              <li className="content__tag">
-                <span>&nbsp;</span>
-              </li>
-            </ul>
+      <Header />
+      <Sidebar />
+      <Main />
+    </div>
+  );
+}
 
-            <div className="main__checkbox">
-              <input type="checkbox" name="done" />
-              <label htmlFor="done">Done</label>
-            </div>
+function Header() {
+  return (
+    <header className="header">
+      <h1>todo</h1>
+      <button className="btn">
+        <span role="button" aria-label="plus">
+          ➕
+        </span>
+      </button>
+    </header>
+  );
+}
 
-            <div className="edit">
-              <button className="btn">...</button>
+function Sidebar() {
+  return (
+    <aside className="sidebar">
+      <TagList />
+    </aside>
+  );
+}
 
-              <div className="controls">
-                <button className="btn">Edit</button>
-                <button className="btn">Delete</button>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section className="main__content">
-          <h2>The First task title</h2>
-          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
-          <div className="content__tags">
-            <ul className="content__tags_list">
-              <li className="content__tag">
-                <span>&nbsp;</span>
-              </li>
-              <li className="content__tag">
-                <span>&nbsp;</span>
-              </li>
-            </ul>
+function TagList() {
+  return (
+    <>
+      <ul className="tag__list">
+        {initialTags.map(tag => (
+          <Tag tag={tag} key={tag.id} />
+        ))}
+      </ul>
+      <input type="checkbox" name="done-task" />
+      <label htmlFor="done-task">Hide Done Tasks</label>
+    </>
+  );
+}
 
-            <div className="main__checkbox">
-              <input type="checkbox" name="done" />
-              <label htmlFor="done">Done</label>
-            </div>
+function Tag({ tag }) {
+  return (
+    <li className="tag__item">
+      <button className="btn">
+        <span style={{ backgroundColor: tag.color }}>&nbsp;</span> {tag.text}
+      </button>
+    </li>
+  );
+}
 
-            <div className="edit">
-              <button className="btn">...</button>
+function Main() {
+  return (
+    <main className="main">
+      {initialTask.map(task => (
+        <MainContent task={task} />
+      ))}
+    </main>
+  );
+}
 
-              <div className="controls">
-                <button className="btn">Edit</button>
-                <button className="btn">Delete</button>
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
+function MainContent({ task }) {
+  return (
+    <section className="main__content">
+      <h2>{task.title}</h2>
+      <p>{task.text}</p>
+      <div className="content__tags">
+        <TagContentList />
+
+        <div className="main__checkbox">
+          <input type="checkbox" name="done" />
+          <label htmlFor="done">Done</label>
+        </div>
+
+        <EditControl />
+      </div>
+    </section>
+  );
+}
+
+function TagContentList() {
+  return (
+    <ul className="content__tags_list">
+      <TagContent />
+    </ul>
+  );
+}
+
+function TagContent() {
+  return (
+    <li className="content__tag">
+      <span>&nbsp;</span>
+    </li>
+  );
+}
+
+function EditControl() {
+  return (
+    <div className="edit">
+      <button className="btn">...</button>
+
+      <div className="controls">
+        <button className="btn">Edit</button>
+        <button className="btn">Delete</button>
+      </div>
     </div>
   );
 }
