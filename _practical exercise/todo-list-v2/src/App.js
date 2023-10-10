@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 
 const initialTask = [
   {
@@ -81,6 +82,7 @@ export default function App() {
 
   return (
     <div className="container">
+      <Toaster />
       <Header handleOpenForm={handleOpenForm} />
       <Sidebar />
       <Main toDo={toDo} />
@@ -203,6 +205,11 @@ function PopUpForm({ onOpenForm, onAddToDo }) {
   function handleSubmit(e) {
     e.preventDefault();
 
+    if (!newToDoText || !newToDoTitle) {
+      toast.error('Please input all fields');
+      return;
+    }
+
     const id = crypto.randomUUID();
     const newToDoEntry = {
       id,
@@ -211,9 +218,9 @@ function PopUpForm({ onOpenForm, onAddToDo }) {
       tags: [],
     };
 
-    console.log(newToDoEntry);
-
     onAddToDo(newToDoEntry);
+
+    toast.success('Successfully Added!');
   }
 
   return (
