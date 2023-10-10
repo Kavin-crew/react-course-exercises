@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 const initialTask = [
   {
     id: 1,
@@ -21,7 +23,7 @@ const initialTask = [
     isDone: false,
   },
   {
-    id: 3,
+    id: 4,
     title: 'The fourth task title',
     text: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit ipsum dolor sit amet consectetur, adipisicing elit.',
     tags: ['family'],
@@ -65,22 +67,36 @@ const initialTags = [
 ];
 
 export default function App() {
+  const [popupOpen, setPopupOpen] = useState(false);
+  const [toDo, setTodo] = useState(initialTask);
+
+  function handleOpenForm() {
+    setPopupOpen(open => !open);
+  }
+
+  function handleAddToDo(newToDo) {
+    setTodo(toDos => [...toDos, newToDo]);
+    setPopupOpen(false);
+  }
+
   return (
     <div className="container">
-      <Header />
+      <Header handleOpenForm={handleOpenForm} />
       <Sidebar />
-      <Main />
-      <PopUpForm />
-      <PopUpOverlay />
+      <Main toDo={toDo} />
+      {popupOpen && (
+        <PopUpForm onOpenForm={handleOpenForm} onAddToDo={handleAddToDo} />
+      )}
+      {popupOpen && <PopUpOverlay onOpenForm={handleOpenForm} />}
     </div>
   );
 }
 
-function Header() {
+function Header({ handleOpenForm }) {
   return (
     <header className="header">
       <h1>todo</h1>
-      <button className="btn">
+      <button className="btn" onClick={handleOpenForm}>
         <span role="button" aria-label="plus">
           ➕
         </span>
@@ -121,11 +137,11 @@ function Tag({ tag }) {
   );
 }
 
-function Main() {
+function Main({ toDo }) {
   return (
     <main className="main">
-      {initialTask.map(task => (
-        <MainContent task={task} />
+      {toDo.map(task => (
+        <MainContent task={task} key={task.id} />
       ))}
     </main>
   );
@@ -179,10 +195,30 @@ function EditControl() {
   );
 }
 
-function PopUpForm() {
+function PopUpForm({ onOpenForm, onAddToDo }) {
+  // adding states to new input as New To Do item
+  const [newToDoTitle, setNewToDoTitle] = useState('');
+  const [newToDoText, setNewToDoText] = useState('');
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    const id = crypto.randomUUID();
+    const newToDoEntry = {
+      id,
+      title: newToDoTitle,
+      text: newToDoText,
+      tags: [],
+    };
+
+    console.log(newToDoEntry);
+
+    onAddToDo(newToDoEntry);
+  }
+
   return (
-    <form className="form">
-      <button className="btn form__close_btn">
+    <form className="form" onSubmit={handleSubmit} method="post">
+      <button className="btn form__close_btn" onClick={onOpenForm}>
         <span role="button" aria-label="close">
           ❌
         </span>
@@ -190,31 +226,42 @@ function PopUpForm() {
       <div className="form__container">
         <div className="form__row">
           <label htmlFor="form__title">Title: </label>
-          <input type="text" name="form__title" />
+          <input
+            type="text"
+            name="form__title"
+            value={newToDoTitle}
+            onChange={e => setNewToDoTitle(e.target.value)}
+          />
         </div>
         <div className="form__row">
           <label htmlFor="form__text">Text: </label>
-          <textarea type="text" name="form__text" className="form__text" />
+          <textarea
+            type="text"
+            name="form__text"
+            className="form__text"
+            value={newToDoText}
+            onChange={e => setNewToDoText(e.target.value)}
+          />
         </div>
         <ul className="form__tag_list">
           <li className="form__tag_item">
-            <input type="checkbox" name="form__Work" />
+            <input type="checkbox" name="form__Work" id="form__Study" />
             <label htmlFor="form__Work">Work</label>
           </li>
           <li className="form__tag_item">
-            <input type="checkbox" name="form__Family" />
+            <input type="checkbox" name="form__Family" id="form__Family" />
             <label htmlFor="form__Family">Family</label>
           </li>
           <li className="form__tag_item">
-            <input type="checkbox" name="form__Study" />
+            <input type="checkbox" name="form__Study" id="form__Study" />
             <label htmlFor="form__Study">Study</label>
           </li>
           <li className="form__tag_item">
-            <input type="checkbox" name="form__Hobby" />
+            <input type="checkbox" name="form__Hobby" id="form__Hobby" />
             <label htmlFor="form__Hobby">Hobby</label>
           </li>
           <li className="form__tag_item">
-            <input type="checkbox" name="form__Others" />
+            <input type="checkbox" name="form__Others" id="form__Others" />
             <label htmlFor="form__Others">Others</label>
           </li>
         </ul>
@@ -224,6 +271,6 @@ function PopUpForm() {
   );
 }
 
-function PopUpOverlay() {
-  return <div className="pop_up__overlay"></div>;
+function PopUpOverlay({ onOpenForm }) {
+  return <div className="pop_up__overlay" onClick={onOpenForm}></div>;
 }
