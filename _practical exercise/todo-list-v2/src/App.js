@@ -75,9 +75,20 @@ export default function App() {
     setPopupOpen(open => !open);
   }
 
+  // adding
   function handleAddToDo(newToDo) {
     setTodo(toDos => [...toDos, newToDo]);
     setPopupOpen(false);
+  }
+
+  // deleting
+  function handleDeleteToDo(id) {
+    setTodo(toDos => toDos.filter(todo => todo.id !== id));
+    setPopupOpen(false);
+
+    toast('Removed task!', {
+      icon: '🗑️',
+    });
   }
 
   return (
@@ -85,7 +96,7 @@ export default function App() {
       <Toaster />
       <Header handleOpenForm={handleOpenForm} />
       <Sidebar />
-      <Main toDo={toDo} />
+      <Main toDo={toDo} onDelete={handleDeleteToDo} />
       {popupOpen && (
         <PopUpForm onOpenForm={handleOpenForm} onAddToDo={handleAddToDo} />
       )}
@@ -139,17 +150,17 @@ function Tag({ tag }) {
   );
 }
 
-function Main({ toDo }) {
+function Main({ toDo, onDelete }) {
   return (
     <main className="main">
       {toDo.map(task => (
-        <MainContent task={task} key={task.id} />
+        <MainContent task={task} key={task.id} onDelete={onDelete} />
       ))}
     </main>
   );
 }
 
-function MainContent({ task }) {
+function MainContent({ task, onDelete }) {
   return (
     <section className="main__content">
       <h2>{task.title}</h2>
@@ -162,7 +173,7 @@ function MainContent({ task }) {
           <label htmlFor="done">Done</label>
         </div>
 
-        <EditControl />
+        <EditControl task={task} onDelete={onDelete} />
       </div>
     </section>
   );
@@ -184,14 +195,16 @@ function TagContent() {
   );
 }
 
-function EditControl() {
+function EditControl({ task, onDelete }) {
   return (
     <div className="edit">
       <button className="btn">...</button>
 
       <div className="controls">
         <button className="btn">Edit</button>
-        <button className="btn">Delete</button>
+        <button className="btn" onClick={() => onDelete(task.id)}>
+          Delete
+        </button>
       </div>
     </div>
   );
@@ -220,7 +233,7 @@ function PopUpForm({ onOpenForm, onAddToDo }) {
 
     onAddToDo(newToDoEntry);
 
-    toast.success('Successfully Added!');
+    toast.success('Successfully added!');
   }
 
   return (
