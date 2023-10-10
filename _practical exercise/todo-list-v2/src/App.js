@@ -70,6 +70,7 @@ const initialTags = [
 export default function App() {
   const [popupOpen, setPopupOpen] = useState(false);
   const [toDo, setTodo] = useState(initialTask);
+  const [selectedTodo, setSelectedTodo] = useState(null);
 
   function handleOpenForm() {
     setPopupOpen(open => !open);
@@ -79,6 +80,21 @@ export default function App() {
   function handleAddToDo(newToDo) {
     setTodo(toDos => [...toDos, newToDo]);
     setPopupOpen(false);
+  }
+
+  // editing
+  function handleSelection(toDo) {
+    setSelectedTodo(selected => (selected?.id === toDo.id ? null : toDo));
+  }
+
+  function handleUpdateTodo(updatedTodo) {
+    setTodo(toDos =>
+      toDos.map(todo =>
+        todo.id === selectedTodo.id
+          ? { ...todo, title: updatedTodo.title, text: updatedTodo.text }
+          : todo
+      )
+    );
   }
 
   // deleting
@@ -96,7 +112,21 @@ export default function App() {
       <Toaster />
       <Header handleOpenForm={handleOpenForm} />
       <Sidebar />
-      <Main toDo={toDo} onDelete={handleDeleteToDo} />
+      <Main
+        toDo={toDo}
+        onDelete={handleDeleteToDo}
+        onSelection={handleSelection}
+      />
+
+      {selectedTodo && (
+        <PopUpFormUpdate
+          onUpdateTodo={handleUpdateTodo}
+          onSelection={setSelectedTodo}
+          selectedTodo={selectedTodo}
+        />
+      )}
+      {selectedTodo && <PopUpOverlayUpdate onSelection={setSelectedTodo} />}
+
       {popupOpen && (
         <PopUpForm onOpenForm={handleOpenForm} onAddToDo={handleAddToDo} />
       )}
@@ -134,7 +164,7 @@ function TagList() {
           <Tag tag={tag} key={tag.id} />
         ))}
       </ul>
-      <input type="checkbox" name="done-task" />
+      <input type="checkbox" name="done-task" id="done-task" />
       <label htmlFor="done-task">Hide Done Tasks</label>
     </>
   );
@@ -150,17 +180,22 @@ function Tag({ tag }) {
   );
 }
 
-function Main({ toDo, onDelete }) {
+function Main({ toDo, onDelete, onSelection }) {
   return (
     <main className="main">
       {toDo.map(task => (
-        <MainContent task={task} key={task.id} onDelete={onDelete} />
+        <MainContent
+          task={task}
+          key={task.id}
+          onDelete={onDelete}
+          onSelection={onSelection}
+        />
       ))}
     </main>
   );
 }
 
-function MainContent({ task, onDelete }) {
+function MainContent({ task, onDelete, onSelection }) {
   return (
     <section className="main__content">
       <h2>{task.title}</h2>
@@ -169,11 +204,15 @@ function MainContent({ task, onDelete }) {
         <TagContentList />
 
         <div className="main__checkbox">
-          <input type="checkbox" name="done" />
+          <input type="checkbox" name="done" id="done" />
           <label htmlFor="done">Done</label>
         </div>
 
-        <EditControl task={task} onDelete={onDelete} />
+        <EditControl
+          task={task}
+          onDelete={onDelete}
+          onSelection={onSelection}
+        />
       </div>
     </section>
   );
@@ -195,13 +234,15 @@ function TagContent() {
   );
 }
 
-function EditControl({ task, onDelete }) {
+function EditControl({ task, onSelection, onDelete }) {
   return (
     <div className="edit">
       <button className="btn">...</button>
 
       <div className="controls">
-        <button className="btn">Edit</button>
+        <button className="btn" onClick={() => onSelection(task)}>
+          Edit
+        </button>
         <button className="btn" onClick={() => onDelete(task.id)}>
           Delete
         </button>
@@ -288,6 +329,70 @@ function PopUpForm({ onOpenForm, onAddToDo }) {
         <button className="btn btn-save">Save</button>
       </div>
     </form>
+  );
+}
+
+function PopUpFormUpdate({ selectedTodo, onUpdateTodo, onSelection }) {
+  console.log(onSelection);
+  // adding states to new input as New To Do item
+  const [newToDoTitle, setNewToDoTitle] = useState(selectedTodo.title);
+  const [newToDoText, setNewToDoText] = useState(selectedTodo.text);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    const updatedTodo = { title: newToDoTitle, text: newToDoText };
+
+    onUpdateTodo(updatedTodo);
+
+    onSelection(null);
+
+    toast.success('Successfully updated!');
+  }
+
+  return (
+    <form className="form" onSubmit={handleSubmit} method="post">
+      <button
+        className="btn form__close_btn"
+        onClick={() => onSelection(open => !open)}
+      >
+        <span role="button" aria-label="close">
+          ❌
+        </span>
+      </button>
+      <div className="form__container">
+        <div className="form__row">
+          <label htmlFor="form__title">Title: </label>
+          <input
+            type="text"
+            name="form__title"
+            value={newToDoTitle}
+            onChange={e => setNewToDoTitle(e.target.value)}
+          />
+        </div>
+        <div className="form__row">
+          <label htmlFor="form__text">Text: </label>
+          <textarea
+            type="text"
+            name="form__text"
+            className="form__text"
+            value={newToDoText}
+            onChange={e => setNewToDoText(e.target.value)}
+          />
+        </div>
+
+        <button className="btn btn-save">Update</button>
+      </div>
+    </form>
+  );
+}
+
+function PopUpOverlayUpdate({ onSelection }) {
+  return (
+    <div
+      className="pop_up__overlay"
+      onClick={() => onSelection(open => !open)}
+    ></div>
   );
 }
 
