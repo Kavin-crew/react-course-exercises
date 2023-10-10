@@ -70,6 +70,8 @@ export default function App() {
       <Header />
       <Sidebar />
       <Main />
+      <PopUpForm />
+      <PopUpOverlay />
     </div>
   );
 }
@@ -175,4 +177,53 @@ function EditControl() {
       </div>
     </div>
   );
+}
+
+function PopUpForm() {
+  return (
+    <form className="form">
+      <button className="btn form__close_btn">
+        <span role="button" aria-label="close">
+          ❌
+        </span>
+      </button>
+      <div className="form__container">
+        <div className="form__row">
+          <label htmlFor="form__title">Title: </label>
+          <input type="text" name="form__title" />
+        </div>
+        <div className="form__row">
+          <label htmlFor="form__text">Text: </label>
+          <textarea type="text" name="form__text" className="form__text" />
+        </div>
+        <ul className="form__tag_list">
+          <li className="form__tag_item">
+            <input type="checkbox" name="form__Work" />
+            <label htmlFor="form__Work">Work</label>
+          </li>
+          <li className="form__tag_item">
+            <input type="checkbox" name="form__Family" />
+            <label htmlFor="form__Family">Family</label>
+          </li>
+          <li className="form__tag_item">
+            <input type="checkbox" name="form__Study" />
+            <label htmlFor="form__Study">Study</label>
+          </li>
+          <li className="form__tag_item">
+            <input type="checkbox" name="form__Hobby" />
+            <label htmlFor="form__Hobby">Hobby</label>
+          </li>
+          <li className="form__tag_item">
+            <input type="checkbox" name="form__Others" />
+            <label htmlFor="form__Others">Others</label>
+          </li>
+        </ul>
+        <button className="btn btn-save">Save</button>
+      </div>
+    </form>
+  );
+}
+
+function PopUpOverlay() {
+  return <div className="pop_up__overlay"></div>;
 }
