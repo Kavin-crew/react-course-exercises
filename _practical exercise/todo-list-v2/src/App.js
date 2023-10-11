@@ -215,9 +215,7 @@ function Tag({ tag }) {
 function Main({ toDo, onDelete, onSelection, onToggleTodo, sortBy }) {
   // derived state based on the todo array
   let sortedTodo;
-
   if (sortBy === false) sortedTodo = toDo;
-
   if (sortBy === true)
     sortedTodo = toDo.slice().filter(done => done.isDone === false);
   return (
@@ -320,6 +318,7 @@ function PopUpForm({ onOpenForm, onAddToDo }) {
       id,
       title: newToDoTitle,
       text: newToDoText,
+      isDone: false,
       tags: [],
     };
 
