@@ -23,6 +23,8 @@
   --color-purple-2: #231756;
   --color-purple-3: #e6dffd;
 
+  --color-green: #daf2d6;
+
   --color-white: #fff;
 
   --text-stroke: rgb(186, 186, 186) 1px 0px 0px,
@@ -194,6 +196,12 @@ input[type='checkbox'] {
   border-radius: 5px;
   background: var(--color-white);
   position: relative;
+  border: 1px solid var(--color-white);
+}
+
+.main__content.isDone {
+  background: var(--color-green);
+  border: 1px solid #fff;
 }
 
 .edit {

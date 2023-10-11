@@ -237,7 +237,7 @@ function Main({ toDo, onDelete, onSelection, onToggleTodo, sortBy }) {
 
 function MainContent({ task, onDelete, onSelection, onToggleTodo }) {
   return (
-    <section className="main__content">
+    <section className={`main__content ${task.isDone ? 'isDone' : ''}`}>
       <h2 style={task.isDone ? { textDecoration: 'line-through' } : {}}>
         {task.title}
       </h2>
@@ -250,12 +250,13 @@ function MainContent({ task, onDelete, onSelection, onToggleTodo }) {
         <div className="main__checkbox">
           <input
             type="checkbox"
-            name="done"
+            name={`done${task.id}`}
             id="done"
             value={task.isDone}
+            defaultChecked={task.isDone}
             onChange={() => onToggleTodo(task.id)}
           />
-          <label htmlFor="done">Done</label>
+          <label htmlFor={`done${task.id}`}>Done</label>
         </div>
 
         <EditControl
