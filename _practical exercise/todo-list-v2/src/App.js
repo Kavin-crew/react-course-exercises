@@ -111,6 +111,15 @@ export default function App() {
     });
   }
 
+  // toggle task done
+  function handleToggleTodo(id) {
+    setTodo(toDos =>
+      toDos.map(todo =>
+        todo.id === id ? { ...todo, isDone: !todo.isDone } : todo
+      )
+    );
+  }
+
   return (
     <div className="container">
       <Toaster />
@@ -120,6 +129,7 @@ export default function App() {
         toDo={toDo}
         onDelete={handleDeleteToDo}
         onSelection={handleSelection}
+        onToggleTodo={handleToggleTodo}
       />
 
       {/* adding new todo */}
@@ -191,7 +201,7 @@ function Tag({ tag }) {
   );
 }
 
-function Main({ toDo, onDelete, onSelection }) {
+function Main({ toDo, onDelete, onSelection, onToggleTodo }) {
   return (
     <main className="main">
       {toDo.map(task => (
@@ -200,22 +210,33 @@ function Main({ toDo, onDelete, onSelection }) {
           key={task.id}
           onDelete={onDelete}
           onSelection={onSelection}
+          onToggleTodo={onToggleTodo}
         />
       ))}
     </main>
   );
 }
 
-function MainContent({ task, onDelete, onSelection }) {
+function MainContent({ task, onDelete, onSelection, onToggleTodo }) {
   return (
     <section className="main__content">
-      <h2>{task.title}</h2>
-      <p>{task.text}</p>
+      <h2 style={task.isDone ? { textDecoration: 'line-through' } : {}}>
+        {task.title}
+      </h2>
+      <p style={task.isDone ? { textDecoration: 'line-through' } : {}}>
+        {task.text}
+      </p>
       <div className="content__tags">
         <TagContentList />
 
         <div className="main__checkbox">
-          <input type="checkbox" name="done" id="done" />
+          <input
+            type="checkbox"
+            name="done"
+            id="done"
+            value={task.isDone}
+            onChange={() => onToggleTodo(task.id)}
+          />
           <label htmlFor="done">Done</label>
         </div>
 
