@@ -1,3 +1,6 @@
+# Eyes here... view live version
+<a href="https://kfa-todolist-v2.netlify.app/" target="_blank">View on Netlify</a>
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
