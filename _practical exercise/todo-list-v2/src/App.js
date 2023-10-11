@@ -76,6 +76,10 @@ export default function App() {
     setPopupOpen(open => !open);
   }
 
+  function handleOpenUpdateForm() {
+    setSelectedTodo(open => !open);
+  }
+
   // adding
   function handleAddToDo(newToDo) {
     setTodo(toDos => [...toDos, newToDo]);
@@ -118,19 +122,26 @@ export default function App() {
         onSelection={handleSelection}
       />
 
-      {selectedTodo && (
-        <PopUpFormUpdate
-          onUpdateTodo={handleUpdateTodo}
-          onSelection={setSelectedTodo}
-          selectedTodo={selectedTodo}
-        />
-      )}
-      {selectedTodo && <PopUpOverlayUpdate onSelection={setSelectedTodo} />}
-
+      {/* adding new todo */}
       {popupOpen && (
-        <PopUpForm onOpenForm={handleOpenForm} onAddToDo={handleAddToDo} />
+        <>
+          <PopUpForm onOpenForm={handleOpenForm} onAddToDo={handleAddToDo} />
+          <PopUpOverlay onOpenForm={handleOpenForm} />
+        </>
       )}
-      {popupOpen && <PopUpOverlay onOpenForm={handleOpenForm} />}
+
+      {/* updating todo */}
+      {selectedTodo && (
+        <>
+          <PopUpFormUpdate
+            onUpdateTodo={handleUpdateTodo}
+            onSelection={setSelectedTodo}
+            selectedTodo={selectedTodo}
+            onOpenForm={handleOpenUpdateForm}
+          />
+          <PopUpOverlay onOpenForm={handleOpenUpdateForm} />
+        </>
+      )}
     </div>
   );
 }
@@ -278,62 +289,23 @@ function PopUpForm({ onOpenForm, onAddToDo }) {
   }
 
   return (
-    <form className="form" onSubmit={handleSubmit} method="post">
-      <button className="btn form__close_btn" onClick={onOpenForm}>
-        <span role="button" aria-label="close">
-          ❌
-        </span>
-      </button>
-      <div className="form__container">
-        <div className="form__row">
-          <label htmlFor="form__title">Title: </label>
-          <input
-            type="text"
-            name="form__title"
-            value={newToDoTitle}
-            onChange={e => setNewToDoTitle(e.target.value)}
-          />
-        </div>
-        <div className="form__row">
-          <label htmlFor="form__text">Text: </label>
-          <textarea
-            type="text"
-            name="form__text"
-            className="form__text"
-            value={newToDoText}
-            onChange={e => setNewToDoText(e.target.value)}
-          />
-        </div>
-        <ul className="form__tag_list">
-          <li className="form__tag_item">
-            <input type="checkbox" name="form__Work" id="form__Study" />
-            <label htmlFor="form__Work">Work</label>
-          </li>
-          <li className="form__tag_item">
-            <input type="checkbox" name="form__Family" id="form__Family" />
-            <label htmlFor="form__Family">Family</label>
-          </li>
-          <li className="form__tag_item">
-            <input type="checkbox" name="form__Study" id="form__Study" />
-            <label htmlFor="form__Study">Study</label>
-          </li>
-          <li className="form__tag_item">
-            <input type="checkbox" name="form__Hobby" id="form__Hobby" />
-            <label htmlFor="form__Hobby">Hobby</label>
-          </li>
-          <li className="form__tag_item">
-            <input type="checkbox" name="form__Others" id="form__Others" />
-            <label htmlFor="form__Others">Others</label>
-          </li>
-        </ul>
-        <button className="btn btn-save">Save</button>
-      </div>
-    </form>
+    <Form
+      handleSubmit={handleSubmit}
+      toDoTitle={newToDoTitle}
+      toDoText={newToDoText}
+      seToDoTitle={setNewToDoTitle}
+      setToDoText={setNewToDoText}
+      onSelection={onOpenForm}
+    />
   );
 }
 
-function PopUpFormUpdate({ selectedTodo, onUpdateTodo, onSelection }) {
-  console.log(onSelection);
+function PopUpFormUpdate({
+  selectedTodo,
+  onUpdateTodo,
+  onSelection,
+  onOpenForm,
+}) {
   // adding states to new input as New To Do item
   const [newToDoTitle, setNewToDoTitle] = useState(selectedTodo.title);
   const [newToDoText, setNewToDoText] = useState(selectedTodo.text);
@@ -350,12 +322,33 @@ function PopUpFormUpdate({ selectedTodo, onUpdateTodo, onSelection }) {
     toast.success('Successfully updated!');
   }
 
+  // function handleOpenForm() {
+  //   onSelection(open => !open);
+  // }
+
+  return (
+    <Form
+      handleSubmit={handleSubmit}
+      toDoTitle={newToDoTitle}
+      toDoText={newToDoText}
+      seToDoTitle={setNewToDoTitle}
+      setToDoText={setNewToDoText}
+      onSelection={onOpenForm}
+    />
+  );
+}
+
+function Form({
+  handleSubmit,
+  onSelection,
+  toDoTitle,
+  toDoText,
+  seToDoTitle,
+  setToDoText,
+}) {
   return (
     <form className="form" onSubmit={handleSubmit} method="post">
-      <button
-        className="btn form__close_btn"
-        onClick={() => onSelection(open => !open)}
-      >
+      <button className="btn form__close_btn" onClick={onSelection}>
         <span role="button" aria-label="close">
           ❌
         </span>
@@ -366,8 +359,10 @@ function PopUpFormUpdate({ selectedTodo, onUpdateTodo, onSelection }) {
           <input
             type="text"
             name="form__title"
-            value={newToDoTitle}
-            onChange={e => setNewToDoTitle(e.target.value)}
+            value={toDoTitle}
+            onChange={e => seToDoTitle(e.target.value)}
+            placeholder="Add title *"
+            required
           />
         </div>
         <div className="form__row">
@@ -376,23 +371,16 @@ function PopUpFormUpdate({ selectedTodo, onUpdateTodo, onSelection }) {
             type="text"
             name="form__text"
             className="form__text"
-            value={newToDoText}
-            onChange={e => setNewToDoText(e.target.value)}
+            value={toDoText}
+            onChange={e => setToDoText(e.target.value)}
+            placeholder="Add short description *"
+            required
           />
         </div>
 
-        <button className="btn btn-save">Update</button>
+        <button className="btn btn-save">Save</button>
       </div>
     </form>
-  );
-}
-
-function PopUpOverlayUpdate({ onSelection }) {
-  return (
-    <div
-      className="pop_up__overlay"
-      onClick={() => onSelection(open => !open)}
-    ></div>
   );
 }
 
