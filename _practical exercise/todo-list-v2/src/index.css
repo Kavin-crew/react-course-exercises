@@ -221,7 +221,7 @@ input[type='checkbox'] {
 .form {
   position: absolute;
   max-width: 530px;
-  width: 100%;
+  width: 86%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
