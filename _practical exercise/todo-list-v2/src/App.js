@@ -14,7 +14,7 @@ const initialTask = [
     title: 'The second task title',
     text: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Cumque voluptatibus unde consequuntur doloremque vitae quod distinctio, delectus illum incidunt modi velit impedit maxime reprehenderit eos. Blanditiis quis obcaecati autem labore.',
     tags: ['work'],
-    isDone: false,
+    isDone: true,
   },
   {
     id: 3,
@@ -35,7 +35,7 @@ const initialTask = [
     title: 'The fifth task title',
     text: 'Lorem ipsum dolor sit.',
     tags: ['work', 'study'],
-    isDone: false,
+    isDone: true,
   },
 ];
 
@@ -71,6 +71,7 @@ export default function App() {
   const [popupOpen, setPopupOpen] = useState(false);
   const [toDo, setTodo] = useState(initialTask);
   const [selectedTodo, setSelectedTodo] = useState(null);
+  const [sortBy, setSortBy] = useState(false);
 
   function handleOpenForm() {
     setPopupOpen(open => !open);
@@ -120,16 +121,21 @@ export default function App() {
     );
   }
 
+  function handleToggleHideTodo() {
+    setSortBy(sorted => !sorted);
+  }
+
   return (
     <div className="container">
       <Toaster />
       <Header handleOpenForm={handleOpenForm} />
-      <Sidebar />
+      <Sidebar onSortTodo={handleToggleHideTodo} />
       <Main
         toDo={toDo}
         onDelete={handleDeleteToDo}
         onSelection={handleSelection}
         onToggleTodo={handleToggleTodo}
+        sortBy={sortBy}
       />
 
       {/* adding new todo */}
@@ -169,15 +175,15 @@ function Header({ handleOpenForm }) {
   );
 }
 
-function Sidebar() {
+function Sidebar({ onSortTodo }) {
   return (
     <aside className="sidebar">
-      <TagList />
+      <TagList onSortTodo={onSortTodo} />
     </aside>
   );
 }
 
-function TagList() {
+function TagList({ onSortTodo }) {
   return (
     <>
       <ul className="tag__list">
@@ -185,7 +191,12 @@ function TagList() {
           <Tag tag={tag} key={tag.id} />
         ))}
       </ul>
-      <input type="checkbox" name="done-task" id="done-task" />
+      <input
+        type="checkbox"
+        name="done-task"
+        id="done-task"
+        onChange={onSortTodo}
+      />
       <label htmlFor="done-task">Hide Done Tasks</label>
     </>
   );
@@ -201,10 +212,17 @@ function Tag({ tag }) {
   );
 }
 
-function Main({ toDo, onDelete, onSelection, onToggleTodo }) {
+function Main({ toDo, onDelete, onSelection, onToggleTodo, sortBy }) {
+  // derived state based on the todo array
+  let sortedTodo;
+
+  if (sortBy === false) sortedTodo = toDo;
+
+  if (sortBy === true)
+    sortedTodo = toDo.slice().filter(done => done.isDone === false);
   return (
     <main className="main">
-      {toDo.map(task => (
+      {sortedTodo.map(task => (
         <MainContent
           task={task}
           key={task.id}
