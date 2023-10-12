@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import StarRating from './StartRating';
+import toast, { Toaster } from 'react-hot-toast';
 
 const tempMovieData = [
   {
@@ -57,20 +58,37 @@ export default function App() {
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const query = 'john';
 
   useEffect(function () {
     async function fecthMovies() {
-      setIsLoading(true);
-      const res = await fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=john`);
-      const data = await res.json();
-      setMovies(data.Search);
-      setIsLoading(false);
+      try {
+        setIsLoading(true);
+        const res = await fetch(
+          `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+        );
+        const data = await res.json();
+
+        if (!res.ok)
+          throw new Error('Something went wrong with fetching movies');
+
+        if (data.Response === 'False') throw new Error('Movie not found');
+
+        setMovies(data.Search);
+      } catch (error) {
+        setError(error.message);
+        toast.error(error.message);
+      } finally {
+        setIsLoading(false);
+      }
     }
     fecthMovies();
   }, []);
 
   return (
     <>
+      <Toaster />
       <NavBar>
         <Logo />
         <Search />
@@ -78,12 +96,16 @@ export default function App() {
       </NavBar>
       <Main>
         <Box>
-          {isLoading ? <Loader /> : <MovieList movies={movies} />}
+          {/* {isLoading ? <Loader /> : <MovieList movies={movies} />} */}
           {/* <StarRating defaultRating={3} maxRating={7} />
           <StarRating
             messages={['Terrible', 'Bad', 'Good', 'Okay', 'Amazing']}
             defaultRating={3}
           /> */}
+
+          {isLoading && <Loader />}
+          {!isLoading && !error && <MovieList movies={movies} />}
+          {error && <ErrorMessage message={error} />}
         </Box>
         <Box>
           <WatchedSummary watched={watched} />
@@ -96,6 +118,17 @@ export default function App() {
 
 function Loader() {
   return <p className="loader">Loading...</p>;
+}
+
+function ErrorMessage({ message }) {
+  return (
+    <p className="error">
+      <span role="button" aria-label="stop icon">
+        ⛔
+      </span>
+      {message}
+    </p>
+  );
 }
 
 // structural component
