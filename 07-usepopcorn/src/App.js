@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import StarRating from './StartRating';
 
 const tempMovieData = [
@@ -54,19 +54,20 @@ const average = arr =>
 const KEY = '4a287b95';
 
 export default function App() {
-  const [movies, setMovies] = useState(tempMovieData);
-  const [watched, setWatched] = useState(tempWatchedData);
+  const [movies, setMovies] = useState([]);
+  const [watched, setWatched] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  async function apiCall() {
-    try {
+  useEffect(function () {
+    async function fecthMovies() {
+      setIsLoading(true);
       const res = await fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=john`);
-      const data = res.json();
-      return data;
-    } catch (error) {
-      console.log(error);
+      const data = await res.json();
+      setMovies(data.Search);
+      setIsLoading(false);
     }
-  }
-  apiCall();
+    fecthMovies();
+  }, []);
 
   return (
     <>
@@ -77,12 +78,12 @@ export default function App() {
       </NavBar>
       <Main>
         <Box>
-          <MovieList movies={movies} />
-          <StarRating defaultRating={3} maxRating={7} />
+          {isLoading ? <Loader /> : <MovieList movies={movies} />}
+          {/* <StarRating defaultRating={3} maxRating={7} />
           <StarRating
             messages={['Terrible', 'Bad', 'Good', 'Okay', 'Amazing']}
             defaultRating={3}
-          />
+          /> */}
         </Box>
         <Box>
           <WatchedSummary watched={watched} />
@@ -91,6 +92,10 @@ export default function App() {
       </Main>
     </>
   );
+}
+
+function Loader() {
+  return <p className="loader">Loading...</p>;
 }
 
 // structural component
