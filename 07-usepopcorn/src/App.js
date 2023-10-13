@@ -59,14 +59,15 @@ export default function App() {
   const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const query = 'john';
+  const [query, setQuery] = useState('');
+  const tempQuery = 'john';
 
   useEffect(function () {
     async function fecthMovies() {
       try {
         setIsLoading(true);
         const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+          `http://www.omdbapi.com/?apikey=${KEY}&s=${tempQuery}`
         );
         const data = await res.json();
 
@@ -91,7 +92,7 @@ export default function App() {
       <Toaster />
       <NavBar>
         <Logo />
-        <Search />
+        <Search query={query} setQuery={setQuery} />
         <NumResults movies={movies} />
       </NavBar>
       <Main>
@@ -136,8 +137,7 @@ function NavBar({ children }) {
   return <nav className="nav-bar">{children}</nav>;
 }
 // statefull component
-function Search() {
-  const [query, setQuery] = useState('');
+function Search({ query, setQuery }) {
   return (
     <input
       className="search"
