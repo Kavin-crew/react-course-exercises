@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import StarRating from './StartRating';
+// import StarRating from './StartRating';
 import toast, { Toaster } from 'react-hot-toast';
 
 const tempMovieData = [
@@ -62,30 +62,63 @@ export default function App() {
   const [query, setQuery] = useState('');
   const tempQuery = 'john';
 
+  // useEffect with empty array as dependency run during initialize/mounting of the component
   useEffect(function () {
-    async function fecthMovies() {
-      try {
-        setIsLoading(true);
-        const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${KEY}&s=${tempQuery}`
-        );
-        const data = await res.json();
-
-        if (!res.ok)
-          throw new Error('Something went wrong with fetching movies');
-
-        if (data.Response === 'False') throw new Error('Movie not found');
-
-        setMovies(data.Search);
-      } catch (error) {
-        setError(error.message);
-        toast.error(error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    fecthMovies();
+    console.log('After initial render');
   }, []);
+
+  // useEffect without dependency, renders everytime app has changes
+  // bad practice
+  useEffect(function () {
+    console.log('After every render');
+  });
+
+  // in this case, useEffect will re-render once query state is updated
+  useEffect(
+    function () {
+      console.log();
+    },
+    [query]
+  );
+
+  // console log is executed in render phase
+  console.log('During render');
+
+  useEffect(
+    function () {
+      async function fecthMovies() {
+        try {
+          setIsLoading(true);
+          setError('');
+
+          const res = await fetch(
+            `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+          );
+          const data = await res.json();
+
+          if (!res.ok)
+            throw new Error('Something went wrong with fetching movies');
+
+          if (data.Response === 'False') throw new Error('Movie not found');
+
+          setMovies(data.Search);
+        } catch (error) {
+          setError(error.message);
+          toast.error(error.message);
+        } finally {
+          setIsLoading(false);
+        }
+      }
+      if (query.length < 3) {
+        setMovies([]);
+        setError('');
+        return;
+      }
+
+      fecthMovies();
+    },
+    [query]
+  );
 
   return (
     <>
