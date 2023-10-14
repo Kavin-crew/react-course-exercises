@@ -72,6 +72,7 @@ export default function App() {
   const [toDo, setTodo] = useState(initialTask);
   const [selectedTodo, setSelectedTodo] = useState(null);
   const [sortBy, setSortBy] = useState(false);
+  const [curOpenEdit, setCurOpenEdit] = useState(null);
 
   function handleOpenForm() {
     setPopupOpen(open => !open);
@@ -136,6 +137,9 @@ export default function App() {
         onSelection={handleSelection}
         onToggleTodo={handleToggleTodo}
         sortBy={sortBy}
+        initialTags={initialTags}
+        curOpenEdit={curOpenEdit}
+        setCurOpenEdit={setCurOpenEdit}
       />
 
       {/* adding new todo */}
@@ -212,7 +216,16 @@ function Tag({ tag }) {
   );
 }
 
-function Main({ toDo, onDelete, onSelection, onToggleTodo, sortBy }) {
+function Main({
+  toDo,
+  onDelete,
+  onSelection,
+  onToggleTodo,
+  sortBy,
+  initialTags,
+  curOpenEdit,
+  setCurOpenEdit,
+}) {
   // derived state based on the todo array
   let sortedTodo;
   if (sortBy === false) sortedTodo = toDo;
@@ -221,20 +234,32 @@ function Main({ toDo, onDelete, onSelection, onToggleTodo, sortBy }) {
 
   return (
     <main className="main">
-      {sortedTodo.map(task => (
+      {sortedTodo.map((task, i) => (
         <MainContent
           task={task}
           key={task.id}
           onDelete={onDelete}
           onSelection={onSelection}
           onToggleTodo={onToggleTodo}
+          initialTags={initialTags}
+          curOpenEdit={curOpenEdit}
+          setCurOpenEdit={setCurOpenEdit}
+          num={i}
         />
       ))}
     </main>
   );
 }
 
-function MainContent({ task, onDelete, onSelection, onToggleTodo }) {
+function MainContent({
+  task,
+  onDelete,
+  onSelection,
+  onToggleTodo,
+  initialTags,
+  curOpenEdit,
+  setCurOpenEdit,
+}) {
   return (
     <section className={`main__content ${task.isDone ? 'isDone' : ''}`}>
       <h2 style={task.isDone ? { textDecoration: 'line-through' } : {}}>
@@ -244,7 +269,7 @@ function MainContent({ task, onDelete, onSelection, onToggleTodo }) {
         {task.text}
       </p>
       <div className="content__tags">
-        <TagContentList />
+        <TagContentList task={task} initialTags={initialTags} key={task.id} />
 
         <div className="main__checkbox">
           <input
@@ -262,39 +287,52 @@ function MainContent({ task, onDelete, onSelection, onToggleTodo }) {
           task={task}
           onDelete={onDelete}
           onSelection={onSelection}
+          curOpenEdit={curOpenEdit}
+          setCurOpenEdit={setCurOpenEdit}
         />
       </div>
     </section>
   );
 }
 
-function TagContentList() {
+function TagContentList({ task, initialTags }) {
+  const [tagColor, setTagColor] = useState(initialTags);
+  const [taskColor, setTaskColor] = useState(task.tags);
+
   return (
     <ul className="content__tags_list">
-      <TagContent />
+      {taskColor.map((tag, i) => (
+        <TagContent tag={tag} key={tag.id} />
+      ))}
     </ul>
   );
 }
 
-function TagContent() {
+function TagContent({ color }) {
+  console.log(color);
   return (
     <li className="content__tag">
-      <span>&nbsp;</span>
+      <span style={{ background: color }}>&nbsp;</span>
     </li>
   );
 }
 
-function EditControl({ task, onSelection, onDelete }) {
-  const [openControls, setOpenControls] = useState(false);
+function EditControl({
+  task,
+  onSelection,
+  onDelete,
+  curOpenEdit,
+  setCurOpenEdit,
+}) {
+  const isOpen = task.id === curOpenEdit;
 
   function handleOpenControls() {
-    setOpenControls(open => !open);
+    setCurOpenEdit(isOpen ? null : task.id);
   }
 
   function handleOnEdit() {
     onSelection(task);
-    setOpenControls(false);
-    console.log(task.id);
+    setCurOpenEdit(false);
   }
   return (
     <div className="edit">
@@ -302,7 +340,7 @@ function EditControl({ task, onSelection, onDelete }) {
         ...
       </button>
 
-      {openControls && (
+      {isOpen && (
         <div className="controls">
           <button className="btn" onClick={handleOnEdit}>
             Edit
