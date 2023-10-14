@@ -218,6 +218,7 @@ function Main({ toDo, onDelete, onSelection, onToggleTodo, sortBy }) {
   if (sortBy === false) sortedTodo = toDo;
   if (sortBy === true)
     sortedTodo = toDo.slice().filter(done => done.isDone === false);
+
   return (
     <main className="main">
       {sortedTodo.map(task => (
@@ -284,18 +285,33 @@ function TagContent() {
 }
 
 function EditControl({ task, onSelection, onDelete }) {
+  const [openControls, setOpenControls] = useState(false);
+
+  function handleOpenControls() {
+    setOpenControls(open => !open);
+  }
+
+  function handleOnEdit() {
+    onSelection(task);
+    setOpenControls(false);
+    console.log(task.id);
+  }
   return (
     <div className="edit">
-      <button className="btn">...</button>
+      <button className="btn" onClick={handleOpenControls}>
+        ...
+      </button>
 
-      <div className="controls">
-        <button className="btn" onClick={() => onSelection(task)}>
-          Edit
-        </button>
-        <button className="btn" onClick={() => onDelete(task.id)}>
-          Delete
-        </button>
-      </div>
+      {openControls && (
+        <div className="controls">
+          <button className="btn" onClick={handleOnEdit}>
+            Edit
+          </button>
+          <button className="btn" onClick={() => onDelete(task.id)}>
+            Delete
+          </button>
+        </div>
+      )}
     </div>
   );
 }
