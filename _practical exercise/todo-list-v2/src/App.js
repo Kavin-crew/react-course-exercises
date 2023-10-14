@@ -42,27 +42,27 @@ const initialTask = [
 const initialTags = [
   {
     id: '1',
-    text: 'Work',
+    text: 'work',
     color: '#0076dc',
   },
   {
     id: '2',
-    text: 'Family',
+    text: 'family',
     color: '#0ecad4',
   },
   {
     id: '3',
-    text: 'Study',
+    text: 'study',
     color: '#6a92b8',
   },
   {
     id: '4',
-    text: 'Hobby',
+    text: 'hobby',
     color: '#66adea',
   },
   {
     id: '5',
-    text: 'Others',
+    text: 'others',
     color: '#8f75ef',
   },
 ];
@@ -296,23 +296,20 @@ function MainContent({
 }
 
 function TagContentList({ task, initialTags }) {
-  const [tagColor, setTagColor] = useState(initialTags);
-  const [taskColor, setTaskColor] = useState(task.tags);
-
+  const tags = [...task.tags];
   return (
     <ul className="content__tags_list">
-      {taskColor.map((tag, i) => (
-        <TagContent tag={tag} key={tag.id} />
+      {tags.map((tag, i) => (
+        <TagContent tag={tag} key={task.id} />
       ))}
     </ul>
   );
 }
 
-function TagContent({ color }) {
-  console.log(color);
+function TagContent({ tag }) {
   return (
-    <li className="content__tag">
-      <span style={{ background: color }}>&nbsp;</span>
+    <li className="content__tag" key={tag.id * 100}>
+      <span>&nbsp;</span>
     </li>
   );
 }
