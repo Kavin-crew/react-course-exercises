@@ -6,7 +6,7 @@ const initialTask = [
     id: 1,
     title: 'The first task title',
     text: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Soluta, vel aliquam ipsa ea consectetur quod dicta. Sapiente fugit excepturi perferendis!',
-    tags: ['work', 'entertainment', 'family'],
+    tags: ['work', 'study', 'family', 'hobby', 'others'],
     isDone: false,
   },
   {
@@ -297,19 +297,29 @@ function MainContent({
 
 function TagContentList({ task, initialTags }) {
   const tags = [...task.tags];
+
   return (
     <ul className="content__tags_list">
       {tags.map((tag, i) => (
-        <TagContent tag={tag} key={task.id} />
+        <TagContent
+          tag={tag}
+          key={`${Math.random() + 1 + task.id}`}
+          initialTags={initialTags}
+        />
       ))}
     </ul>
   );
 }
 
-function TagContent({ tag }) {
+function TagContent({ tag, initialTags }) {
+  let color;
+  initialTags.filter(initTag =>
+    initTag.text === tag ? (color = initTag.color) : ''
+  );
+
   return (
     <li className="content__tag" key={tag.id * 100}>
-      <span>&nbsp;</span>
+      <span style={{ background: color }}>&nbsp;</span>
     </li>
   );
 }
