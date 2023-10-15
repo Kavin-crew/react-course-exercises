@@ -94,10 +94,16 @@ export default function App() {
   }
 
   function handleUpdateTodo(updatedTodo) {
+    console.log(updatedTodo.tagToUpdate);
     setTodo(toDos =>
       toDos.map(todo =>
         todo.id === selectedTodo.id
-          ? { ...todo, title: updatedTodo.title, text: updatedTodo.text }
+          ? {
+              ...todo,
+              title: updatedTodo.title,
+              text: updatedTodo.text,
+              tags: updatedTodo.tags,
+            }
           : todo
       )
     );
@@ -431,11 +437,37 @@ function PopUpFormUpdate({
   // adding states to new input as New To Do item
   const [newToDoTitle, setNewToDoTitle] = useState(selectedTodo.title);
   const [newToDoText, setNewToDoText] = useState(selectedTodo.text);
+  const [
+    work = false,
+    family = false,
+    study = false,
+    hobby = false,
+    others = false,
+  ] = [...selectedTodo.tags];
+
+  const [workTag, setWork] = useState(work);
+  const [familyTag, setFamily] = useState(family);
+  const [studyTag, setStudy] = useState(study);
+  const [hobbyTag, setHobby] = useState(hobby);
+  const [othersTag, setOthers] = useState(others);
+  const tagToUpdate = [];
+
+  console.log(workTag, familyTag, studyTag, hobbyTag, othersTag);
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    const updatedTodo = { title: newToDoTitle, text: newToDoText };
+    if (workTag) tagToUpdate.push('work');
+    if (familyTag) tagToUpdate.push('family');
+    if (studyTag) tagToUpdate.push('study');
+    if (hobbyTag) tagToUpdate.push('hobby');
+    if (othersTag) tagToUpdate.push('others');
+
+    const updatedTodo = {
+      title: newToDoTitle,
+      text: newToDoText,
+      tags: tagToUpdate,
+    };
 
     onUpdateTodo(updatedTodo);
 
@@ -456,6 +488,16 @@ function PopUpFormUpdate({
       seToDoTitle={setNewToDoTitle}
       setToDoText={setNewToDoText}
       onSelection={onOpenForm}
+      work={workTag}
+      family={familyTag}
+      study={studyTag}
+      hobby={hobbyTag}
+      others={othersTag}
+      setWork={setWork}
+      setFamily={setFamily}
+      setStudy={setStudy}
+      setHobby={setHobby}
+      setOthers={setOthers}
     />
   );
 }
@@ -516,7 +558,7 @@ function Form({
                 type="checkbox"
                 name="work"
                 id="work"
-                defaultChecked={work}
+                // defaultChecked={work}
                 checked={work}
                 onChange={e => setWork(e.target.checked)}
               />
@@ -527,7 +569,7 @@ function Form({
                 type="checkbox"
                 name="family"
                 id="family"
-                defaultChecked={family}
+                // defaultChecked={family}
                 checked={family}
                 onChange={e => setFamily(e.target.checked)}
               />
@@ -538,7 +580,7 @@ function Form({
                 type="checkbox"
                 name="study"
                 id="study"
-                defaultChecked={study}
+                // defaultChecked={study}
                 checked={study}
                 onChange={e => setStudy(e.target.checked)}
               />
@@ -549,7 +591,7 @@ function Form({
                 type="checkbox"
                 name="hobby"
                 id="hobby"
-                defaultChecked={hobby}
+                // defaultChecked={hobby}
                 checked={hobby}
                 onChange={e => setHobby(e.target.checked)}
               />
@@ -560,7 +602,7 @@ function Form({
                 type="checkbox"
                 name="others"
                 id="others"
-                defaultChecked={others}
+                // defaultChecked={others}
                 checked={others}
                 onChange={e => setOthers(e.target.checked)}
               />
