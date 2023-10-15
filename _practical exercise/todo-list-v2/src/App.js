@@ -365,6 +365,12 @@ function PopUpForm({ onOpenForm, onAddToDo }) {
   // adding states to new input as New To Do item
   const [newToDoTitle, setNewToDoTitle] = useState('');
   const [newToDoText, setNewToDoText] = useState('');
+  const [work, setWork] = useState(false);
+  const [family, setFamily] = useState(false);
+  const [study, setStudy] = useState(false);
+  const [hobby, setHobby] = useState(false);
+  const [others, setOthers] = useState(false);
+  const setTags = [];
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -374,13 +380,19 @@ function PopUpForm({ onOpenForm, onAddToDo }) {
       return;
     }
 
+    if (work) setTags.push('work');
+    if (family) setTags.push('family');
+    if (study) setTags.push('study');
+    if (hobby) setTags.push('hobby');
+    if (others) setTags.push('others');
+
     const id = crypto.randomUUID();
     const newToDoEntry = {
       id,
       title: newToDoTitle,
       text: newToDoText,
       isDone: false,
-      tags: [],
+      tags: setTags,
     };
 
     onAddToDo(newToDoEntry);
@@ -396,6 +408,16 @@ function PopUpForm({ onOpenForm, onAddToDo }) {
       seToDoTitle={setNewToDoTitle}
       setToDoText={setNewToDoText}
       onSelection={onOpenForm}
+      work={work}
+      family={family}
+      study={study}
+      hobby={hobby}
+      others={others}
+      setWork={setWork}
+      setFamily={setFamily}
+      setStudy={setStudy}
+      setHobby={setHobby}
+      setOthers={setOthers}
     />
   );
 }
@@ -445,6 +467,16 @@ function Form({
   toDoText,
   seToDoTitle,
   setToDoText,
+  work,
+  family,
+  study,
+  hobby,
+  others,
+  setWork,
+  setFamily,
+  setStudy,
+  setHobby,
+  setOthers,
 }) {
   return (
     <form className="form" onSubmit={handleSubmit} method="post">
@@ -477,7 +509,65 @@ function Form({
             required
           />
         </div>
-
+        <div className="form__row">
+          <ul className="form__tag_list">
+            <li className="form__tag">
+              <input
+                type="checkbox"
+                name="work"
+                id="work"
+                defaultChecked={work}
+                checked={work}
+                onChange={e => setWork(e.target.checked)}
+              />
+              <label htmlFor="work">Work</label>
+            </li>
+            <li className="form__tag">
+              <input
+                type="checkbox"
+                name="family"
+                id="family"
+                defaultChecked={family}
+                checked={family}
+                onChange={e => setFamily(e.target.checked)}
+              />
+              <label htmlFor="family">Family</label>
+            </li>
+            <li className="form__tag">
+              <input
+                type="checkbox"
+                name="study"
+                id="study"
+                defaultChecked={study}
+                checked={study}
+                onChange={e => setStudy(e.target.checked)}
+              />
+              <label htmlFor="study">Study</label>
+            </li>
+            <li className="form__tag">
+              <input
+                type="checkbox"
+                name="hobby"
+                id="hobby"
+                defaultChecked={hobby}
+                checked={hobby}
+                onChange={e => setHobby(e.target.checked)}
+              />
+              <label htmlFor="hobby">Hobby</label>
+            </li>
+            <li className="form__tag">
+              <input
+                type="checkbox"
+                name="others"
+                id="others"
+                defaultChecked={others}
+                checked={others}
+                onChange={e => setOthers(e.target.checked)}
+              />
+              <label htmlFor="others">Others</label>
+            </li>
+          </ul>
+        </div>
         <button className="btn btn-save">Save</button>
       </div>
     </form>
