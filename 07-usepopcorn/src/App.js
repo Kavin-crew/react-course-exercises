@@ -60,29 +60,37 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [query, setQuery] = useState('');
-  const tempQuery = 'john';
+  const [selectedId, setSelectedId] = useState(null);
 
   // useEffect with empty array as dependency run during initialize/mounting of the component
-  useEffect(function () {
-    console.log('After initial render');
-  }, []);
+  // useEffect(function () {
+  //   console.log('After initial render');
+  // }, []);
 
-  // useEffect without dependency, renders everytime app has changes
-  // bad practice
-  useEffect(function () {
-    console.log('After every render');
-  });
+  // // useEffect without dependency, renders everytime app has changes
+  // // bad practice
+  // useEffect(function () {
+  //   console.log('After every render');
+  // });
 
-  // in this case, useEffect will re-render once query state is updated
-  useEffect(
-    function () {
-      console.log();
-    },
-    [query]
-  );
+  // // in this case, useEffect will re-render once query state is updated
+  // useEffect(
+  //   function () {
+  //     console.log();
+  //   },
+  //   [query]
+  // );
 
   // console log is executed in render phase
-  console.log('During render');
+  // console.log('During render');
+
+  function handleSelectMovie(id) {
+    setSelectedId(selectedId => (id === selectedId ? null : id));
+  }
+
+  function handleCloseMovie() {
+    setSelectedId(null);
+  }
 
   useEffect(
     function () {
@@ -138,12 +146,23 @@ export default function App() {
           /> */}
 
           {isLoading && <Loader />}
-          {!isLoading && !error && <MovieList movies={movies} />}
+          {!isLoading && !error && (
+            <MovieList movies={movies} onSelectMovie={handleSelectMovie} />
+          )}
           {error && <ErrorMessage message={error} />}
         </Box>
         <Box>
-          <WatchedSummary watched={watched} />
-          <WatchedMoviesList watched={watched} />
+          {selectedId ? (
+            <MovieDetails
+              selectedId={selectedId}
+              onCLoseMovie={handleCloseMovie}
+            />
+          ) : (
+            <>
+              <WatchedSummary watched={watched} />
+              <WatchedMoviesList watched={watched} />
+            </>
+          )}
         </Box>
       </Main>
     </>
@@ -238,19 +257,19 @@ function Box({ children }) {
 //   );
 // }
 
-function MovieList({ movies }) {
+function MovieList({ movies, onSelectMovie }) {
   return (
-    <ul className="list">
+    <ul className="list list-movies">
       {movies?.map(movie => (
-        <Movie movie={movie} key={movie.imdbID} />
+        <Movie movie={movie} key={movie.imdbID} onSelectMovie={onSelectMovie} />
       ))}
     </ul>
   );
 }
 // stateless/presentation
-function Movie({ movie }) {
+function Movie({ movie, onSelectMovie }) {
   return (
-    <li key={movie.imdbID}>
+    <li key={movie.imdbID} onClick={() => onSelectMovie(movie.imdbID)}>
       <img src={movie.Poster} alt={`${movie.Title} poster`} />
       <h3>{movie.Title}</h3>
       <div>
@@ -260,6 +279,17 @@ function Movie({ movie }) {
         </p>
       </div>
     </li>
+  );
+}
+
+function MovieDetails({ selectedId, onCLoseMovie }) {
+  return (
+    <div className="details">
+      <button onClick={onCLoseMovie} className="btn-back">
+        &larr;
+      </button>
+      {selectedId}
+    </div>
   );
 }
 
