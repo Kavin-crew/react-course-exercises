@@ -43,7 +43,7 @@ export default function StarRating({
   function handleRating(rating) {
     setRating(rating);
     // outside state for the user
-    // onSetRating(rating);
+    onSetRating(rating);
   }
 
   return (
