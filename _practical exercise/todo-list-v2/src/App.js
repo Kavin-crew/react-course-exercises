@@ -73,6 +73,7 @@ export default function App() {
   const [selectedTodo, setSelectedTodo] = useState(null);
   const [sortBy, setSortBy] = useState(false);
   const [curOpenEdit, setCurOpenEdit] = useState(null);
+  const [sortByCat, setSortByCat] = useState(null);
 
   function handleOpenForm() {
     setPopupOpen(open => !open);
@@ -131,17 +132,26 @@ export default function App() {
     setSortBy(sorted => !sorted);
   }
 
+  function handleSetCategory(category) {
+    setSortByCat(curCat => (curCat === category ? null : category));
+  }
+
   return (
     <div className="container">
       <Toaster />
       <Header handleOpenForm={handleOpenForm} />
-      <Sidebar onSortTodo={handleToggleHideTodo} />
+      <Sidebar
+        onSortTodo={handleToggleHideTodo}
+        onSetCategory={handleSetCategory}
+        sortByCat={sortByCat}
+      />
       <Main
         toDo={toDo}
         onDelete={handleDeleteToDo}
         onSelection={handleSelection}
         onToggleTodo={handleToggleTodo}
         sortBy={sortBy}
+        sortByCat={sortByCat}
         initialTags={initialTags}
         curOpenEdit={curOpenEdit}
         setCurOpenEdit={setCurOpenEdit}
@@ -185,20 +195,29 @@ function Header({ handleOpenForm }) {
   );
 }
 
-function Sidebar({ onSortTodo }) {
+function Sidebar({ onSortTodo, onSetCategory, sortByCat }) {
   return (
     <aside className="sidebar">
-      <TagList onSortTodo={onSortTodo} />
+      <TagList
+        onSortTodo={onSortTodo}
+        onSetCategory={onSetCategory}
+        sortByCat={sortByCat}
+      />
     </aside>
   );
 }
 
-function TagList({ onSortTodo }) {
+function TagList({ onSortTodo, onSetCategory, sortByCat }) {
   return (
     <>
       <ul className="tag__list">
         {initialTags.map(tag => (
-          <Tag tag={tag} key={tag.id} />
+          <Tag
+            tag={tag}
+            key={tag.id}
+            onSetCategory={onSetCategory}
+            sortByCat={sortByCat}
+          />
         ))}
       </ul>
       <input
@@ -212,10 +231,10 @@ function TagList({ onSortTodo }) {
   );
 }
 
-function Tag({ tag }) {
+function Tag({ tag, onSetCategory, sortByCat }) {
   return (
-    <li className="tag__item">
-      <button className="btn">
+    <li className={`tag__item ${sortByCat === tag.text ? 'active' : ''}`}>
+      <button className="btn" onClick={() => onSetCategory(tag.text)}>
         <span style={{ backgroundColor: tag.color }}>&nbsp;</span> {tag.text}
       </button>
     </li>
@@ -228,6 +247,7 @@ function Main({
   onSelection,
   onToggleTodo,
   sortBy,
+  sortByCat,
   initialTags,
   curOpenEdit,
   setCurOpenEdit,
@@ -235,8 +255,23 @@ function Main({
   // derived state based on the todo array
   let sortedTodo;
   if (sortBy === false) sortedTodo = toDo;
-  if (sortBy === true)
+
+  if (sortByCat !== null && sortBy === false)
+    sortedTodo = toDo.slice().filter(todo => todo.tags.includes(sortByCat));
+
+  if (sortByCat !== null && sortBy === true)
     sortedTodo = toDo.slice().filter(done => done.isDone === false);
+
+  // if (sortByCat === 'work')
+  //   sortedTodo = toDo.slice().filter(todo => todo.tags.includes('work'));
+  // if (sortByCat === 'family')
+  //   sortedTodo = toDo.slice().filter(todo => todo.tags.includes('family'));
+  // if (sortByCat === 'study')
+  //   sortedTodo = toDo.slice().filter(todo => todo.tags.includes('study'));
+  // if (sortByCat === 'hobby')
+  //   sortedTodo = toDo.slice().filter(todo => todo.tags.includes('hobby'));
+  // if (sortByCat === 'others')
+  //   sortedTodo = toDo.slice().filter(todo => todo.tags.includes('others'));
 
   return (
     <main className="main">
@@ -433,7 +468,6 @@ function PopUpFormUpdate({
   onUpdateTodo,
   onSelection,
   onOpenForm,
-  initialTags,
 }) {
   // adding states to new input as New To Do item
   const [newToDoTitle, setNewToDoTitle] = useState(selectedTodo.title);

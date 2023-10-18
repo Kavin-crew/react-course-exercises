@@ -136,9 +136,26 @@ label {
 
 .tag__item button {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   column-gap: 10px;
+  width: 100%;
+  padding: 5px;
+}
+
+.tag__item {
+  border-radius: 55px;
+  cursor: pointer;
+}
+
+.tag__item.active,
+.tag__item:hover {
+  background: var(--color-blue-1);
+}
+
+.tag__item.active button,
+.tag__item:hover button {
+  color: #fff;
 }
 
 .tag__list {
