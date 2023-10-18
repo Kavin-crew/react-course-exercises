@@ -94,7 +94,6 @@ export default function App() {
   }
 
   function handleUpdateTodo(updatedTodo) {
-    console.log(updatedTodo.tagToUpdate);
     setTodo(toDos =>
       toDos.map(todo =>
         todo.id === selectedTodo.id
@@ -164,6 +163,7 @@ export default function App() {
             onSelection={setSelectedTodo}
             selectedTodo={selectedTodo}
             onOpenForm={handleOpenUpdateForm}
+            initialTags={initialTags}
           />
           <PopUpOverlay onOpenForm={handleOpenUpdateForm} />
         </>
@@ -433,26 +433,27 @@ function PopUpFormUpdate({
   onUpdateTodo,
   onSelection,
   onOpenForm,
+  initialTags,
 }) {
   // adding states to new input as New To Do item
   const [newToDoTitle, setNewToDoTitle] = useState(selectedTodo.title);
   const [newToDoText, setNewToDoText] = useState(selectedTodo.text);
-  const [
-    work = false,
-    family = false,
-    study = false,
-    hobby = false,
-    others = false,
-  ] = [...selectedTodo.tags];
+  const selectedTags = [...selectedTodo.tags];
+
+  const work = selectedTags.includes('work');
+  const family = selectedTags.includes('family');
+  const study = selectedTags.includes('study');
+  const hobby = selectedTags.includes('hobby');
+  const others = selectedTags.includes('others');
+  // console.log(tagArr);
 
   const [workTag, setWork] = useState(work);
   const [familyTag, setFamily] = useState(family);
   const [studyTag, setStudy] = useState(study);
   const [hobbyTag, setHobby] = useState(hobby);
   const [othersTag, setOthers] = useState(others);
-  const tagToUpdate = [];
 
-  console.log(workTag, familyTag, studyTag, hobbyTag, othersTag);
+  const tagToUpdate = [];
 
   function handleSubmit(e) {
     e.preventDefault();
