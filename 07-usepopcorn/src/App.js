@@ -137,6 +137,7 @@ export default function App() {
         return;
       }
 
+      handleCloseMovie();
       fecthMovies();
 
       return function () {
@@ -357,6 +358,23 @@ function MovieDetails({ selectedId, onCLoseMovie, onAddWatched, watched }) {
       };
     },
     [title]
+  );
+
+  useEffect(
+    function () {
+      function EscKey(e) {
+        if (e.code === 'Escape') {
+          onCLoseMovie();
+        }
+      }
+
+      document.addEventListener('keydown', EscKey);
+
+      return function () {
+        document.removeEventListener('keydown', EscKey);
+      };
+    },
+    [onCLoseMovie]
   );
 
   function handleAdd() {
