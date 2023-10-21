@@ -235,6 +235,11 @@ function MovieDetails({ selectedId, onCLoseMovie, onAddWatched, watched }) {
     Genre: genre,
   } = movie;
 
+  const isTop = imdbRating > 8;
+  console.log(isTop);
+
+  const [avgRating, setAvgRating] = useState(0);
+
   useEffect(
     function () {
       async function getMovieDetails() {
@@ -293,6 +298,12 @@ function MovieDetails({ selectedId, onCLoseMovie, onAddWatched, watched }) {
     };
     onAddWatched(newWatchedMovie);
     onCLoseMovie();
+    // setAvgRating(Number(imdbRating));
+
+    // avgRating here is still 0, since state is asynchronous,
+    // instead, we use a callback function
+    // setAvgRating((avgRating + userRating) / 2)
+    // setAvgRating(curRating => (curRating + userRating) / 2);
   }
 
   return (
@@ -318,6 +329,8 @@ function MovieDetails({ selectedId, onCLoseMovie, onAddWatched, watched }) {
               </p>
             </div>
           </header>
+
+          {/* <p>{avgRating}</p> */}
 
           <section>
             <div className="rating">
