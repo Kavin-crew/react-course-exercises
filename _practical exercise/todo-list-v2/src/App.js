@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
 const initialTask = [
@@ -555,6 +555,12 @@ function Form({
   setHobby,
   setOthers,
 }) {
+  const active = useRef(null);
+
+  useEffect(function () {
+    active.current.focus();
+  }, []);
+
   return (
     <form className="form" onSubmit={handleSubmit} method="post">
       <button className="btn form__close_btn" onClick={onSelection}>
@@ -572,6 +578,7 @@ function Form({
             onChange={e => seToDoTitle(e.target.value)}
             placeholder="Add title *"
             required
+            ref={active}
           />
         </div>
         <div className="form__row">
