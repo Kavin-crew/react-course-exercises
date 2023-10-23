@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import StarRating from './StartRating';
 import toast, { Toaster } from 'react-hot-toast';
+import { useMovies } from './useMovies';
 
 const average = arr =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
@@ -8,12 +9,10 @@ const average = arr =>
 const KEY = '4a287b95';
 
 export default function App() {
-  const [movies, setMovies] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
   const [query, setQuery] = useState('');
   const [selectedId, setSelectedId] = useState(null);
-
+  // custom hook
+  const { movies, isLoading, error } = useMovies(query);
   // const [watched, setWatched] = useState([]);
   const [watched, setWatched] = useState(function () {
     const storedValue = localStorage.getItem('watched');
@@ -41,53 +40,6 @@ export default function App() {
       localStorage.setItem('watched', JSON.stringify(watched));
     },
     [watched]
-  );
-
-  useEffect(
-    function () {
-      const controller = new AbortController();
-
-      async function fecthMovies() {
-        try {
-          setIsLoading(true);
-          setError('');
-
-          const res = await fetch(
-            `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`,
-            { signal: controller.signal }
-          );
-          const data = await res.json();
-
-          if (!res.ok)
-            throw new Error('Something went wrong with fetching movies');
-
-          if (data.Response === 'False') throw new Error('Movie not found');
-
-          setMovies(data.Search);
-          setError('');
-        } catch (error) {
-          if (error.name !== 'AbortError') {
-            setError(error.message);
-            toast.error(error.message);
-          }
-        } finally {
-          setIsLoading(false);
-        }
-      }
-      if (query.length < 3) {
-        setMovies([]);
-        setError('');
-        return;
-      }
-
-      handleCloseMovie();
-      fecthMovies();
-
-      return function () {
-        controller.abort();
-      };
-    },
-    [query]
   );
 
   return (
@@ -283,10 +235,10 @@ function MovieDetails({ selectedId, onCLoseMovie, onAddWatched, watched }) {
     Genre: genre,
   } = movie;
 
-  const isTop = imdbRating > 8;
-  console.log(isTop);
+  // const isTop = imdbRating > 8;
+  // console.log(isTop);
 
-  const [avgRating, setAvgRating] = useState(0);
+  // const [avgRating, setAvgRating] = useState(0);
 
   useEffect(
     function () {
