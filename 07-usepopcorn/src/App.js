@@ -3,6 +3,7 @@ import StarRating from './StartRating';
 import toast, { Toaster } from 'react-hot-toast';
 import { useMovies } from './useMovies';
 import { useLocalStorageState } from './useLocalStorageState';
+import { useKey } from './useKey';
 
 const average = arr =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
@@ -103,23 +104,33 @@ function NavBar({ children }) {
 function Search({ query, setQuery }) {
   const inputEl = useRef(null);
 
-  useEffect(
-    function () {
-      function callback(e) {
-        if (document.activeElement === inputEl.current) return;
+  // custom hook
+  // accepts a keyboard keypress, and a function
+  // since the custom hook has slight different with this function,
+  // we throw in a function instead based on our need
+  useKey('Enter', function () {
+    if (document.activeElement === inputEl.current) return;
+    inputEl.current.focus();
+    setQuery('');
+  });
 
-        if (e.code === 'Enter') {
-          inputEl.current.focus();
-          setQuery('');
-        }
-      }
+  // useEffect(
+  //   function () {
+  //     function callback(e) {
+  //       if (document.activeElement === inputEl.current) return;
 
-      document.addEventListener('keydown', callback);
+  //       if (e.code === 'Enter') {
+  //         inputEl.current.focus();
+  //         setQuery('');
+  //       }
+  //     }
 
-      return () => document.addEventListener('keydown', callback);
-    },
-    [setQuery]
-  );
+  //     document.addEventListener('keydown', callback);
+
+  //     return () => document.addEventListener('keydown', callback);
+  //   },
+  //   [setQuery]
+  // );
 
   // NOT the react way in selecting DOM elements
   // useEffect(function () {
@@ -268,22 +279,9 @@ function MovieDetails({ selectedId, onCLoseMovie, onAddWatched, watched }) {
     [title]
   );
 
-  useEffect(
-    function () {
-      function EscKey(e) {
-        if (e.code === 'Escape') {
-          onCLoseMovie();
-        }
-      }
-
-      document.addEventListener('keydown', EscKey);
-
-      return function () {
-        document.removeEventListener('keydown', EscKey);
-      };
-    },
-    [onCLoseMovie]
-  );
+  // custom hook
+  // it accepts keyboard keypress, and callback function
+  useKey('Escape', onCLoseMovie);
 
   function handleAdd() {
     const newWatchedMovie = {
