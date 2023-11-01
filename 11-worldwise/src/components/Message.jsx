@@ -1,5 +1,6 @@
 import styles from "./Message.module.css";
-
+/*eslint no-unused-vars: "warn"*/
+/* eslint-disable-next-line */
 function Message({ message }) {
   return (
     <p className={styles.message}>
