@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { faker } from "@faker-js/faker";
+import { createContext, useEffect, useState } from 'react';
+import { faker } from '@faker-js/faker';
 
 function createRandomPost() {
   return {
@@ -7,18 +7,20 @@ function createRandomPost() {
     body: faker.hacker.phrase(),
   };
 }
+// 1. CREATE A CONTENT
+const PostContext = createContext();
 
 function App() {
   const [posts, setPosts] = useState(() =>
     Array.from({ length: 30 }, () => createRandomPost())
   );
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const [isFakeDark, setIsFakeDark] = useState(false);
 
   // Derived state. These are the posts that will actually be displayed
   const searchedPosts =
     searchQuery.length > 0
-      ? posts.filter((post) =>
+      ? posts.filter(post =>
           `${post.title} ${post.body}`
             .toLowerCase()
             .includes(searchQuery.toLowerCase())
@@ -26,7 +28,7 @@ function App() {
       : posts;
 
   function handleAddPost(post) {
-    setPosts((posts) => [post, ...posts]);
+    setPosts(posts => [post, ...posts]);
   }
 
   function handleClearPosts() {
@@ -36,30 +38,41 @@ function App() {
   // Whenever `isFakeDark` changes, we toggle the `fake-dark-mode` class on the HTML element (see in "Elements" dev tool).
   useEffect(
     function () {
-      document.documentElement.classList.toggle("fake-dark-mode");
+      document.documentElement.classList.toggle('fake-dark-mode');
     },
     [isFakeDark]
   );
 
   return (
-    <section>
-      <button
-        onClick={() => setIsFakeDark((isFakeDark) => !isFakeDark)}
-        className="btn-fake-dark-mode"
-      >
-        {isFakeDark ? "☀️" : "🌙"}
-      </button>
+    // 2. PROVIDE VALUE TO CHILD COMPONENTS
+    <PostContext.Provider
+      value={{
+        posts: searchedPosts,
+        onAddPost: handleAddPost,
+        onClearPosts: handleClearPosts,
+        searchQuery,
+        setSearchQuery,
+      }}
+    >
+      <section>
+        <button
+          onClick={() => setIsFakeDark(isFakeDark => !isFakeDark)}
+          className="btn-fake-dark-mode"
+        >
+          {isFakeDark ? '☀️' : '🌙'}
+        </button>
 
-      <Header
-        posts={searchedPosts}
-        onClearPosts={handleClearPosts}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-      />
-      <Main posts={searchedPosts} onAddPost={handleAddPost} />
-      <Archive onAddPost={handleAddPost} />
-      <Footer />
-    </section>
+        <Header
+          posts={searchedPosts}
+          onClearPosts={handleClearPosts}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+        />
+        <Main posts={searchedPosts} onAddPost={handleAddPost} />
+        <Archive onAddPost={handleAddPost} />
+        <Footer />
+      </section>
+    </PostContext.Provider>
   );
 }
 
@@ -85,7 +98,7 @@ function SearchPosts({ searchQuery, setSearchQuery }) {
   return (
     <input
       value={searchQuery}
-      onChange={(e) => setSearchQuery(e.target.value)}
+      onChange={e => setSearchQuery(e.target.value)}
       placeholder="Search posts..."
     />
   );
@@ -113,27 +126,27 @@ function Posts({ posts }) {
 }
 
 function FormAddPost({ onAddPost }) {
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
+  const [title, setTitle] = useState('');
+  const [body, setBody] = useState('');
 
   const handleSubmit = function (e) {
     e.preventDefault();
     if (!body || !title) return;
     onAddPost({ title, body });
-    setTitle("");
-    setBody("");
+    setTitle('');
+    setBody('');
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <input
         value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        onChange={e => setTitle(e.target.value)}
         placeholder="Post title"
       />
       <textarea
         value={body}
-        onChange={(e) => setBody(e.target.value)}
+        onChange={e => setBody(e.target.value)}
         placeholder="Post body"
       />
       <button>Add post</button>
@@ -166,8 +179,8 @@ function Archive({ onAddPost }) {
   return (
     <aside>
       <h2>Post archive</h2>
-      <button onClick={() => setShowArchive((s) => !s)}>
-        {showArchive ? "Hide archive posts" : "Show archive posts"}
+      <button onClick={() => setShowArchive(s => !s)}>
+        {showArchive ? 'Hide archive posts' : 'Show archive posts'}
       </button>
 
       {showArchive && (
