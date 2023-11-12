@@ -23,6 +23,18 @@
         "lng": "123.44046299011619"
       },
       "id": 98443206
+    },
+    {
+      "cityName": "Dalaguete",
+      "country": "Philippines (the)",
+      "date": "2023-11-04T09:44:27.000Z",
+      "emoji": "🇵🇭",
+      "notes": "naligo og dagat w/ friends and enemies ",
+      "position": {
+        "lat": "9.760626037880824",
+        "lng": "123.53076942628928"
+      },
+      "id": 98443207
     }
   ]
 }
