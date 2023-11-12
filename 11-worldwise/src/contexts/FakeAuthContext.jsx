@@ -24,13 +24,16 @@ const FAKE_USER = {
   password: "qwerty",
   avatar: "https://i.pravatar.cc/100?u=zz",
 };
-
+/* eslint-disable-next-line */
 function AuthProvider({ children }) {
-  const { user, isAuthenticated, dispatch } = useReducer(reducer, initialState);
+  const [{ user, isAuthenticated }, dispatch] = useReducer(
+    reducer,
+    initialState
+  );
 
   function login(email, password) {
     if (email === FAKE_USER.email && password === FAKE_USER.password)
-      dispatch({ type: login, payload: FAKE_USER });
+      dispatch({ type: "login", payload: FAKE_USER });
   }
 
   function logout() {
@@ -48,6 +51,7 @@ function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined)
     throw new Error("AuthContext was used outside the AuthProvider");
+  return context;
 }
 
 export { AuthProvider, useAuth };
