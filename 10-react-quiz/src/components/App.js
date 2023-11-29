@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 import Header from './Header';
 import Loader from './Loader';
 import Error from './Error';
 import Main from './Main';
-import { useReducer } from 'react';
+// import { useReducer } from 'react';
 import StartScreen from './StartScreen';
 import Question from './Question';
 import NextButton from './NextButton';
