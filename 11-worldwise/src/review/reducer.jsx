@@ -34,16 +34,25 @@ dispatch({ type: "setStep", payload: Number(e.target.value) });
 ////////////////////////////////////////////
 //Routes
 ////////////////////////////////////////////
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route index element={<p>Homepage</p>} />
         <Route path="product" element={<Product />} />
+        <Route path="app">
+          {/* index will be the default component */}
+          <Route index path="list" element={<p>Default list here...</p>} />
+          <Route path="cities" element={<p>City here...</p>} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
 }
+
+// to call or display the nested route
+<Outlet />;
 
 ////////////////////////////////////////////
 // Link Element
@@ -60,6 +69,11 @@ function App() {
 ////////////////////////////////////////////
 // CSS Module
 ////////////////////////////////////////////
+
+//naming convention
+// AppNav.jsx
+// AppNav.module.css
+
 // :global(.test){
 //   background-color: red;
 // }
