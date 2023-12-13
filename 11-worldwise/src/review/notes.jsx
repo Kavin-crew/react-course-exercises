@@ -130,3 +130,7 @@ navigate('form');
 // using useNavigation as going back
 //const navigate = useNavigate();
 <button onClick={() => navigate(-1)}></button>;
+
+// Navigate component of react is like a redirect
+// we add replace so we can go back from the history stack
+<Route index element={<Navigate replace to="cities" />} />;
