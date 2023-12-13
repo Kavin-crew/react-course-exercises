@@ -1,5 +1,5 @@
 /*eslint no-unused-vars: "warn"*/
-import styles from "./Button.module.css";
+import styles from './Button.module.css';
 /* eslint-disable-next-line */
 function Button({ children, onClick, type }) {
   return (
