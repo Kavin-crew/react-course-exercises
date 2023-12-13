@@ -91,3 +91,19 @@ function App() {
 // step 3. read the state for the url
 import { useParams } from 'react-router-dom';
 const { id } = useParams();
+
+// Query String
+// in this example, that variable name will be lat and lng
+<Link to={`${id}?lat=${position.lat}&lng=${position.lng}`}>Click Here</Link>;
+
+// to consume the query string from the url
+// useSearchParams is also like a useState,
+// we will get the variable in the url
+import { useSearchParams } from 'react-router-dom';
+const [searchParams, setSearchParams] = useSearchParams();
+const lat = searchParams.get('lat');
+const lng = searchParams.get('lng');
+
+//to change the state, we send an object
+//changing the setter Params  will update the value of everywhere
+// onClick={() => setSearchParams({ lat: 23, lng: 50 })}
