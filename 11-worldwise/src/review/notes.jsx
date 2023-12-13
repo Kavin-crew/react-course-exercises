@@ -106,4 +106,27 @@ const lng = searchParams.get('lng');
 
 //to change the state, we send an object
 //changing the setter Params  will update the value of everywhere
-// onClick={() => setSearchParams({ lat: 23, lng: 50 })}
+<button onClick={() => setSearchParams({ lat: 23, lng: 50 })}></button>;
+
+////////////////////////////////////////////
+// useNavigate
+////////////////////////////////////////////
+// programmatic navigation is navigating without letting the user click a link
+// common usecase is when after submiting a form
+
+// useNavigate hook will return a function called navigate
+// once we click the button, it will open the form component
+import { useNavigate } from 'react-router-dom';
+const navigate = useNavigate();
+<button onClick={() => navigate('form')}></button>;
+
+// small comaparison
+// imperative way of navigation
+<NavLink to="cities">Click Here</NavLink>;
+
+//in declarative way of navigation
+navigate('form');
+
+// using useNavigation as going back
+//const navigate = useNavigate();
+<button onClick={() => navigate(-1)}></button>;
