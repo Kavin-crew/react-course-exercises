@@ -1,17 +1,17 @@
-import { useReducer } from 'react';
-import Product from '../pages/Product';
+import { useReducer } from "react";
+import Product from "../pages/Product";
 
 // creating a reducer function
 function reducer(state, action) {
   switch (action.type) {
-    case 'dec':
+    case "dec":
       return { ...state, count: state.count - step };
-    case 'setCount':
+    case "setCount":
       return { ...state, count: action.payload };
-    case 'setStep':
+    case "setStep":
       return { ...state, step: action.payload };
     default:
-      throw new Error('Unknown action');
+      throw new Error("Unknown action");
   }
 }
 
@@ -23,18 +23,18 @@ const [{ count, step }, dispatch] = useReducer(reducer, initialState);
 
 // to call the reducer
 // for dec
-dispatch({ type: 'dec' });
+dispatch({ type: "dec" });
 
 // for manually setting the count
-dispatch({ type: 'setCount', payload: Number(e.target.value) });
+dispatch({ type: "setCount", payload: Number(e.target.value) });
 
 // for manually setting the step
-dispatch({ type: 'setStep', payload: Number(e.target.value) });
+dispatch({ type: "setStep", payload: Number(e.target.value) });
 
 ////////////////////////////////////////////
 //Routes
 ////////////////////////////////////////////
-import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 function App() {
   return (
     <BrowserRouter>
@@ -89,7 +89,7 @@ function App() {
 // step 2. link to that route
 <Link to={`${id}`}>Click Here</Link>;
 // step 3. read the state for the url
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 const { id } = useParams();
 
 // Query String
@@ -99,10 +99,10 @@ const { id } = useParams();
 // to consume the query string from the url
 // useSearchParams is also like a useState,
 // we will get the variable in the url
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from "react-router-dom";
 const [searchParams, setSearchParams] = useSearchParams();
-const lat = searchParams.get('lat');
-const lng = searchParams.get('lng');
+const lat = searchParams.get("lat");
+const lng = searchParams.get("lng");
 
 //to change the state, we send an object
 //changing the setter Params  will update the value of everywhere
@@ -116,16 +116,16 @@ const lng = searchParams.get('lng');
 
 // useNavigate hook will return a function called navigate
 // once we click the button, it will open the form component
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 const navigate = useNavigate();
-<button onClick={() => navigate('form')}></button>;
+<button onClick={() => navigate("form")}></button>;
 
 // small comaparison
 // imperative way of navigation
 <NavLink to="cities">Click Here</NavLink>;
 
 //in declarative way of navigation
-navigate('form');
+navigate("form");
 
 // using useNavigation as going back
 //const navigate = useNavigate();
@@ -134,3 +134,18 @@ navigate('form');
 // Navigate component of react is like a redirect
 // we add replace so we can go back from the history stack
 <Route index element={<Navigate replace to="cities" />} />;
+
+////////////////////////////////////////////
+// ContextApi
+////////////////////////////////////////////
+// 1. Provider - provides all child components access to value
+//             - to topmost level component
+//             - in naming a context, always start with capital letter since its also a component
+const PostContext = createContext();
+// 2. Value - data that we want to make available (usually   state and function)
+<PostContext.Provider value={{ user, isAuthenticated }}>
+  {/* components here... or JSX */}
+</PostContext.Provider>;
+// 3. Consumers - all components that read the provided context value
+//              - destructure the object to get only the needed properties
+const { onClearPosts } = useContext(PostContext);
