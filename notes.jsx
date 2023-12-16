@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useContext, useReducer } from "react";
 import Product from "../pages/Product";
 
 // creating a reducer function
@@ -143,9 +143,86 @@ navigate("form");
 //             - in naming a context, always start with capital letter since its also a component
 const PostContext = createContext();
 // 2. Value - data that we want to make available (usually   state and function)
-<PostContext.Provider value={{ user, isAuthenticated }}>
+<PostContext.Provider
+  value={{
+    user: userID,
+    isAuthenticated,
+    posts: SeachPosts,
+  }}
+>
   {/* components here... or JSX */}
 </PostContext.Provider>;
 // 3. Consumers - all components that read the provided context value
 //              - destructure the object to get only the needed properties
 const { onClearPosts } = useContext(PostContext);
+
+// using advance context api and hook pattern
+// create a new file for this
+// place all states and state updating in this file
+import { createContext } from "react";
+
+// 1. create a context
+const PersonContext = createContext();
+
+//export or we will return a provider
+function PersonProvider({ children }) {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Derived state. These are the posts that will actually be displayed
+  const searchedPosts =
+    searchQuery.length > 0
+      ? posts.filter((post) =>
+          `${post.title} ${post.body}`
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase())
+        )
+      : posts;
+
+  function handleAddPost(post) {
+    setPosts((posts) => [post, ...posts]);
+  }
+
+  return (
+    // 2. PROVIDE VALUE TO CHILD COMPONENTS
+    <PostContext.Provider
+      value={{
+        posts: searchedPosts,
+        onAddPost: handleAddPost,
+        onClearPosts: handleClearPosts,
+        searchQuery,
+        setSearchQuery,
+      }}
+    >
+      {children}
+    </PostContext.Provider>
+  );
+}
+
+// custom hook that will be exported so we can encapsulated the person context
+// that wont be accessable outside
+function usePerson() {
+  const context = useContext(PersonContext);
+  return context;
+}
+// we will export it as named export
+// instead of exporting PersonContext, we will export the custom hook instead,
+export { PersonProvider, usePerson };
+
+// we need to wrap the components inside the provider
+//example in the app component
+import { PersonProvider, usePerson } from "./PersonContext";
+
+<PersonProvider>
+  <Header />
+  <Main />
+  <Footer />
+</PersonProvider>;
+
+// in consuming the data from each component
+function Header() {
+  // instead of this
+  // const {onClearPosts} = useContext(PersonContext);
+
+  // we do it like this
+  const { onClearPosts } = usePerson();
+}
