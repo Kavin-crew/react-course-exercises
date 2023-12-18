@@ -1,3 +1,17 @@
+////////////////////////////////////////////
+// Types of State
+////////////////////////////////////////////
+// State Accessibility
+// Local State - Needed only by one or few components
+//             - Only accessible in component and child components
+// Global State - Might be needed by many components
+//              - accessible to every components in the application
+// Remote State - All application data loaded from remote server (API)
+//              - usually asynchronous
+// UI State     - Everything else, it can be theme, list filters, form data, etc.
+//              - usually synchronous and stored in the application
+
+// reducer
 import { useContext, useReducer } from "react";
 import Product from "../pages/Product";
 
