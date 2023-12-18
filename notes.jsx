@@ -202,6 +202,8 @@ function PersonProvider({ children }) {
 // that wont be accessable outside
 function usePerson() {
   const context = useContext(PersonContext);
+  if (context === undefined)
+    throw new Error("Context is used outside of the provider");
   return context;
 }
 // we will export it as named export
