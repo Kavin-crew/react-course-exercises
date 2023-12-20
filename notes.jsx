@@ -30,7 +30,7 @@ function reducer(state, action) {
 }
 
 // initial state
-const initialState = { count: 0, step: 1 };
+const initialStates = { count: 0, step: 1 };
 
 // declaring a useReducer hook
 const [{ count, step }, dispatch] = useReducer(reducer, initialState);
@@ -155,6 +155,7 @@ navigate("form");
 // 1. Provider - provides all child components access to value
 //             - to topmost level component
 //             - in naming a context, always start with capital letter since its also a component
+
 const PostContext = createContext();
 // 2. Value - data that we want to make available (usually   state and function)
 <PostContext.Provider
@@ -170,10 +171,11 @@ const PostContext = createContext();
 //              - destructure the object to get only the needed properties
 const { onClearPosts } = useContext(PostContext);
 
+//////////////////////////////////////////////////////////
 // using advance context api and hook pattern
 // create a new file for this
 // place all states and state updating in this file
-import { createContext } from "react";
+import { createContext, useContext } from "react";
 
 // 1. create a context
 const PersonContext = createContext();
@@ -247,3 +249,41 @@ function Header() {
 ////////////////////////////////////////////
 // ContextApi + reducer pattern
 ////////////////////////////////////////////
+import { createContext, useContext } from "react";
+
+const AuthContext = createContext();
+
+const initialState = { user: null, isAuthenticated: false };
+
+function reducer({ state, action }) {
+  switch (action.type) {
+    case "login":
+      return { ...state, isAuthenticated: action.payload };
+
+    default:
+      "sample text";
+  }
+}
+
+function AuthProvider({ children }) {
+  const [{ user, isAuthenticated }, dispatch] = useReducer(
+    reducer,
+    initialState
+  );
+
+  // handle functions here...
+
+  return (
+    <AuthContext.Provider value={{ user, isAuthenticated }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+function useAuth() {
+  const context = useContext(AuthContext);
+  if (context === undefined)
+    throw new Error("AuthContext is used outside the provider");
+}
+
+export { AuthProvider, useAuth };
