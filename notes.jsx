@@ -340,3 +340,41 @@ const handleAddPost = useCallback(function handleAddPost(post) {
 }, []);
 
 // useMemo will memoized the value, object while the useCallback memoized the function
+
+/////////////////////////
+//Things to consider before using memoization, when this is present at SAME TIME
+/////////////////////////
+// 1. state in the context all the time
+// 2. context has many consumers
+// 3. app is actually slow or laggy
+
+////////////////////////
+//Directions/Guidelines in memoization
+// 1. if the context provider has direct children components, wrap all the direct children in memo or instead, place all the components as Component composition and make the direct
+//     child as childred prop
+function PostProvider({ children }) {}
+
+// component composition
+<PostProvider>
+  <Header />
+  <Main />
+  <Archive />
+  <Footer />
+</PostProvider>;
+
+////////////////////
+//Making a context value memoized
+const value = useMemo(() => {
+  return {
+    posts: searchedPosts,
+    onAddPost: handleAddPost,
+    onClearPosts: handleClearPosts,
+    searchQuery,
+    setSearchQuery,
+  };
+}, [searchQuery, searchedPosts]);
+
+return (
+  // 2. PROVIDE VALUE TO CHILD COMPONENTS
+  <PostContext.Provider value={value}>{children}</PostContext.Provider>
+);
