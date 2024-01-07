@@ -1,18 +1,16 @@
-/*eslint no-unused-vars: "warn"*/
-import { useParams, useSearchParams } from 'react-router-dom';
-import styles from './City.module.css';
-import { useState, useEffect } from 'react';
-import { useCities } from '../contexts/CitiesContext';
-import Button from './Button';
-import Spinner from './Spinner';
-import BackButton from './BackButton';
+import { useParams } from "react-router-dom";
+import styles from "./City.module.css";
+import { useEffect } from "react";
+import { useCities } from "../contexts/CitiesContext";
+import Spinner from "./Spinner";
+import BackButton from "./BackButton";
 
 const formatDate = (date) =>
-  new Intl.DateTimeFormat('en', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-    weekday: 'long',
+  new Intl.DateTimeFormat("en", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    weekday: "long",
   }).format(new Date(date));
 
 function City() {
@@ -23,7 +21,7 @@ function City() {
     function () {
       getCity(id);
     },
-    [id]
+    [id, getCity]
   );
 
   if (isLoading) return <Spinner />;
