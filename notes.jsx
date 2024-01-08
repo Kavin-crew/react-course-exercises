@@ -12,20 +12,20 @@
 //              - usually synchronous and stored in the application
 
 // reducer
-import { memo, useContext, useMemo, useReducer } from 'react';
-import Product from '../pages/Product';
+import { memo, useContext, useMemo, useReducer } from "react";
+import Product from "../pages/Product";
 
 // creating a reducer function
 function reducer(state, action) {
   switch (action.type) {
-    case 'dec':
+    case "dec":
       return { ...state, count: state.count - step };
-    case 'setCount':
+    case "setCount":
       return { ...state, count: action.payload };
-    case 'setStep':
+    case "setStep":
       return { ...state, step: action.payload };
     default:
-      throw new Error('Unknown action');
+      throw new Error("Unknown action");
   }
 }
 
@@ -37,18 +37,18 @@ const [{ count, step }, dispatch] = useReducer(reducer, initialState);
 
 // to call the reducer
 // for dec
-dispatch({ type: 'dec' });
+dispatch({ type: "dec" });
 
 // for manually setting the count
-dispatch({ type: 'setCount', payload: Number(e.target.value) });
+dispatch({ type: "setCount", payload: Number(e.target.value) });
 
 // for manually setting the step
-dispatch({ type: 'setStep', payload: Number(e.target.value) });
+dispatch({ type: "setStep", payload: Number(e.target.value) });
 
 ////////////////////////////////////////////
 //Routes
 ////////////////////////////////////////////
-import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 function App() {
   return (
     <BrowserRouter>
@@ -103,7 +103,7 @@ function App() {
 // step 2. link to that route
 <Link to={`${id}`}>Click Here</Link>;
 // step 3. read the state for the url
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 const { id } = useParams();
 
 // Query String
@@ -113,10 +113,10 @@ const { id } = useParams();
 // to consume the query string from the url
 // useSearchParams is also like a useState,
 // we will get the variable in the url
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from "react-router-dom";
 const [searchParams, setSearchParams] = useSearchParams();
-const lat = searchParams.get('lat');
-const lng = searchParams.get('lng');
+const lat = searchParams.get("lat");
+const lng = searchParams.get("lng");
 
 //to change the state, we send an object
 //changing the setter Params  will update the value of everywhere
@@ -130,16 +130,16 @@ const lng = searchParams.get('lng');
 
 // useNavigate hook will return a function called navigate
 // once we click the button, it will open the form component
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 const navigate = useNavigate();
-<button onClick={() => navigate('form')}></button>;
+<button onClick={() => navigate("form")}></button>;
 
 // small comaparison
 // imperative way of navigation
 <NavLink to="cities">Click Here</NavLink>;
 
 //in declarative way of navigation
-navigate('form');
+navigate("form");
 
 // using useNavigation as going back
 //const navigate = useNavigate();
@@ -175,14 +175,14 @@ const { onClearPosts } = useContext(PostContext);
 // using advance context api and hook pattern
 // create a new file for this
 // place all states and state updating in this file
-import { createContext, useContext } from 'react';
+import { createContext, useContext } from "react";
 
 // 1. create a context
 const PersonContext = createContext();
 
 //export or we will return a provider
 function PersonProvider({ children }) {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Derived state. These are the posts that will actually be displayed
   const searchedPosts =
@@ -219,7 +219,7 @@ function PersonProvider({ children }) {
 function usePerson() {
   const context = useContext(PersonContext);
   if (context === undefined)
-    throw new Error('Context is used outside of the provider');
+    throw new Error("Context is used outside of the provider");
   return context;
 }
 // we will export it as named export
@@ -228,7 +228,7 @@ export { PersonProvider, usePerson };
 
 // we need to wrap the components inside the provider
 //example in the app component
-import { PersonProvider, usePerson } from './PersonContext';
+import { PersonProvider, usePerson } from "./PersonContext";
 
 <PersonProvider>
   <Header />
@@ -249,7 +249,7 @@ function Header() {
 ////////////////////////////////////////////
 // ContextApi + reducer pattern
 ////////////////////////////////////////////
-import { createContext, useContext } from 'react';
+import { createContext, useContext } from "react";
 
 const AuthContext = createContext();
 
@@ -257,11 +257,11 @@ const initialState = { user: null, isAuthenticated: false };
 
 function reducer({ state, action }) {
   switch (action.type) {
-    case 'login':
+    case "login":
       return { ...state, isAuthenticated: action.payload };
 
     default:
-      'sample text';
+      "sample text";
   }
 }
 
@@ -283,7 +283,7 @@ function AuthProvider({ children }) {
 function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined)
-    throw new Error('AuthContext is used outside the provider');
+    throw new Error("AuthContext is used outside the provider");
 }
 
 export { AuthProvider, useAuth };
@@ -378,3 +378,16 @@ return (
   // 2. PROVIDE VALUE TO CHILD COMPONENTS
   <PostContext.Provider value={value}>{children}</PostContext.Provider>
 );
+
+//////////////////////////
+//Bundle and Code Splitting
+//////////////////////////
+//Bundle - javascript files containing entire application code. downloading all files and load the entire app as SPA
+//Bundle Size - amount of javascript files need to download to run a site
+//Code Splitting - splitting bundle javascript into multiple parts that can be downloaded over time ("lazy loading")
+// step 1
+const Homepage = lazy(() => import("./pages/Homepage"));
+// step 2 - pull all the routes in the app.js in Suspense api component with a fallback of some loading screen
+<Suspense fallback={<SpinnerFullPage />}>
+  <Routes>{/* routes here... */}</Routes>
+</Suspense>;
