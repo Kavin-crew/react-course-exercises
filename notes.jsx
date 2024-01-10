@@ -350,8 +350,7 @@ const handleAddPost = useCallback(function handleAddPost(post) {
 
 ////////////////////////
 //Directions/Guidelines in memoization
-// 1. if the context provider has direct children components, wrap all the direct children in memo or instead, place all the components as Component composition and make the direct
-//     child as childred prop
+// 1. if the context provider has direct children components, wrap all the direct children in memo or instead, place all the components as Component composition and make the direct child as childred prop
 function PostProvider({ children }) {}
 
 // component composition
