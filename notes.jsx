@@ -391,3 +391,32 @@ const Homepage = lazy(() => import("./pages/Homepage"));
 <Suspense fallback={<SpinnerFullPage />}>
   <Routes>{/* routes here... */}</Routes>
 </Suspense>;
+
+//////////////////////////
+//useEffect dependency array
+//////////////////////////
+// 1.every state, props, and context value used inside the effect MUST be included in the dependency array
+// 2.all "reactive value"must be included. that means any function or variable that reference any other reactive value
+//      - reactive value - props, state, context value, derived state, functions that uses other states
+// 3.dependencies choose THEMSELF: never ignore exhausive-deps ESLint rules.
+// 4. do not use Objects or arrays in the dependency arrays
+
+//Removing unnecessary dependencies
+//1. removing function dependencies
+// -move function into effect
+// -if you need function in different places, memoized it useCallback
+// -if the function doest reference any reactive values, move it outside of the component
+//2. removing objects dependencies
+// -instead of including entire objects, includes only the properties you need, (primitive values like string, int)
+// -if doest work, same strategy memoized the function or move the object
+//3. other strategies
+// -if you have multiple related reactive values as dependencies, use reducer (useReducer)
+// -you dont need to include the setState and dispatch (from useReducer), in the dependencies, as React gurantees them to be stable
+
+// When not to use an effects
+// -effects should only be used as last resort, when no other solutions makes sense,
+
+// Three cases Effects is overused
+// 1. responding to user evetns -an event handler function should be used instead of effect
+// 2. fetching data on component mounth. this is okay in small apps but in real world we use React Query
+// 3. synchonizing state changes with one another ( setting state with another state variable). Try to use derived state and event handlers
