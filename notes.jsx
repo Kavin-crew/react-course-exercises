@@ -436,3 +436,39 @@ const Homepage = lazy(() => import("./pages/Homepage"));
 // 1. hard to learn
 // 2. you will encounter redux code in your job
 // 3. some apps require redux
+
+////////////////////////////////////////////
+// sample redux in isolation
+////////////////////////////////////////////
+import { createStore } from "redux";
+
+// const initialState = {
+//   balance: 0,
+//   loan: 0,
+//   loanPurpose: "",
+// };
+
+function reducer(state = initialState, action) {
+  switch (action.type) {
+    case "account/deposit":
+      return { ...state, balance: state.balance + action.payload };
+    case "account/requestLoan":
+      return {
+        ...state,
+        loan: action.payload.amount,
+        loanPurpose: action.payload.purpose,
+        balance: state.balance + action.payload.amount,
+      };
+    default:
+      return state;
+  }
+}
+
+const store = createStore(reducer);
+
+function deposit(amount) {
+  return {
+    type: "account/deposit",
+    payload: amount,
+  };
+}
