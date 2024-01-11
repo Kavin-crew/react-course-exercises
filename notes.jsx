@@ -1,3 +1,6 @@
+// Closure - is a fact that a function that captures all variables from its lexical scope from where it was defined
+//          its like a snapshot of the current values of the variables during that time
+
 ////////////////////////////////////////////
 // Types of State
 ////////////////////////////////////////////
