@@ -422,3 +422,17 @@ const Homepage = lazy(() => import("./pages/Homepage"));
 // 1. responding to user evetns -an event handler function should be used instead of effect
 // 2. fetching data on component mounth. this is okay in small apps but in real world we use React Query
 // 3. synchonizing state changes with one another ( setting state with another state variable). Try to use derived state and event handlers
+
+//////////////////////////
+//Redux
+//////////////////////////
+// 3rd party library to manage global state
+// standalone library, but easy to integrate with react apps using react-redux library
+// all global state is stored in one globally accessible store, which is easy to update using "actions" (like useReducer)
+// its conceptually similar to using Context API + useReducer
+// two "versions" : 1. Classic Redux 2. Modern Redux Toolkit
+
+// Why learn redux
+// 1. hard to learn
+// 2. you will encounter redux code in your job
+// 3. some apps require redux
