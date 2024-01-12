@@ -440,7 +440,20 @@ const Homepage = lazy(() => import("./pages/Homepage"));
 ////////////////////////////////////////////
 // sample redux in isolation
 ////////////////////////////////////////////
-import { createStore } from "redux";
+// need to install redux react-redux
+
+// in our store ////////////////////
+import { combineReducers, createStore } from "redux";
+import accountReducer from "./features/accounts/accountSlice";
+import customerReducer from "./features/customers/customerSlice";
+
+const rootReducer = combineReducers({
+  account: accountReducer,
+  customer: customerReducer,
+});
+const store = createStore(rootReducer);
+export default store;
+///////////////////////////////////
 
 // const initialState = {
 //   balance: 0,
@@ -464,11 +477,21 @@ function reducer(state = initialState, action) {
   }
 }
 
-const store = createStore(reducer);
-
 function deposit(amount) {
   return {
     type: "account/deposit",
     payload: amount,
   };
 }
+
+//to connect react and redux, in index.js , wrap the app in Provider and add the store props
+import { Provider } from "react-redux";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </React.StrictMode>
+);
