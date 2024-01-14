@@ -484,6 +484,7 @@ function deposit(amount) {
   };
 }
 
+/////////////////
 //to connect react and redux, in index.js , wrap the app in Provider and add the store props
 import { Provider } from "react-redux";
 
