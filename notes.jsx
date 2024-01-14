@@ -498,3 +498,20 @@ root.render(
 );
 
 // old way to connect without redux ////////////////////
+function BalanceDisplay({ balance }) {
+  return <div className="balance">{formatCurrency(balance)}</div>;
+}
+
+function mapStateToProps(state) {
+  return {
+    balance: state.account.balance,
+  };
+}
+
+// export default connect(mapStateToProps)(BalanceDisplay);
+
+//Middleware ////////////////
+// middleware is a function that sits between dispatching that action and the store. Allows us to run after dispatching, but before reaching the reducer in the store
+// - perfect for asynchronous code
+// - timers, logins or a place for side effects
+// Redux thunks - is the 3rd party library
