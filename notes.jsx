@@ -495,3 +495,5 @@ root.render(
     </Provider>
   </React.StrictMode>
 );
+
+// old way to connect without redux ////////////////////
