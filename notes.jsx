@@ -443,7 +443,8 @@ const Homepage = lazy(() => import("./pages/Homepage"));
 // need to install redux react-redux
 
 // in our store ////////////////////
-import { combineReducers, createStore } from "redux";
+// separate file named store.js
+import { applyMiddleware, combineReducers, createStore } from "redux";
 import accountReducer from "./features/accounts/accountSlice";
 import customerReducer from "./features/customers/customerSlice";
 
@@ -455,29 +456,31 @@ const store = createStore(rootReducer);
 export default store;
 ///////////////////////////////////
 
+////// separate file for the slice ///////
 // const initialState = {
 //   balance: 0,
 //   loan: 0,
 //   loanPurpose: "",
 // };
 
-function reducer(state = initialState, action) {
-  switch (action.type) {
-    case "account/deposit":
-      return { ...state, balance: state.balance + action.payload };
-    case "account/requestLoan":
-      return {
-        ...state,
-        loan: action.payload.amount,
-        loanPurpose: action.payload.purpose,
-        balance: state.balance + action.payload.amount,
-      };
-    default:
-      return state;
-  }
+// export default function accountReducer(state = initialState, action) {
+switch (action.type) {
+  case "account/deposit":
+    return { ...state, balance: state.balance + action.payload };
+  case "account/requestLoan":
+    return {
+      ...state,
+      loan: action.payload.amount,
+      loanPurpose: action.payload.purpose,
+      balance: state.balance + action.payload.amount,
+    };
+  default:
+    return state;
 }
+// }
 
-function deposit(amount) {
+// Action creator function
+export function deposit(amount) {
   return {
     type: "account/deposit",
     payload: amount,
@@ -486,6 +489,7 @@ function deposit(amount) {
 
 /////////////////
 //to connect react and redux, in index.js , wrap the app in Provider and add the store props
+/////////////
 import { Provider } from "react-redux";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -497,6 +501,18 @@ root.render(
   </React.StrictMode>
 );
 
+// to consume the data/access data
+const customer = useSelector((store) => store.customer.fullName);
+
+// or another example on consuming
+// const dispatch = useDispatch();
+const {
+  loan: currentLoan,
+  loanPurpose: currentLoanPurpose,
+  balance,
+} = useSelector((store) => store.account);
+
+/////////////////
 // old way to connect without redux ////////////////////
 function BalanceDisplay({ balance }) {
   return <div className="balance">{formatCurrency(balance)}</div>;
@@ -515,3 +531,7 @@ function mapStateToProps(state) {
 // - perfect for asynchronous code
 // - timers, logins or a place for side effects
 // Redux thunks - is the 3rd party library
+
+// to use redux thunk
+// 1. npm i redux-thunk and apply it to our store
+// const store = createStore(rootReducer, applyMiddleware(thunk));
