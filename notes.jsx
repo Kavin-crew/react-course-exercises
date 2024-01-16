@@ -558,3 +558,16 @@ export function deposit(amount, currency) {
     dispatch({ type: 'account/deposit', payload: converted });
   };
 }
+
+////////////////////////////
+// Redux Dev Tools
+///////////////////////////
+// 1. add extension on browser Redux DevTools
+// 2. npm i redux-devtools-extension
+// 3. place the applyMiddleware inside the composeWithDevTools
+import { composeWithDevTools } from 'redux-devtools-extension';
+
+// const store = createStore(
+//   rootReducer,
+//   composeWithDevTools(applyMiddleware(thunk))
+// );
