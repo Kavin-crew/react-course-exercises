@@ -571,3 +571,16 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 //   rootReducer,
 //   composeWithDevTools(applyMiddleware(thunk))
 // );
+
+///////////////////////////
+// Redux Toolkit
+//////////////////////////
+// - modern and preferred way of writing Redux code
+// - a lot less code
+
+// 3 big things using redux toolkit
+// 1. We can write code that "mutates" state inside reducers (will be converted to immutable logic behind the scenes by "Immer" library)
+// 2. Action creators are automatically createad
+// 3. Automatic setup of thunk middleware and DevTools
+
+// npm i @reduxjs/toolkit
