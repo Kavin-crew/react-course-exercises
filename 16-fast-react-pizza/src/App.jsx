@@ -20,11 +20,15 @@ const router = createBrowserRouter([
         element: <Cart />,
     },
     {
-        path: '/createorder',
+        path: '/order/new',
         element: <CreateOrder />,
     },
     {
         path: '/order',
+        element: <Order />,
+    },
+    {
+        path: '/order/:orderId',
         element: <Order />,
     },
 ]);
