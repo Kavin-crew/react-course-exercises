@@ -609,3 +609,23 @@ import { composeWithDevTools } from "redux-devtools-extension";
 // ***cons
 // -requires additional package (larger bundle size)
 // -more work initially
+
+////////////////////
+// React Router v6
+///////////////////
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/menu",
+    element: <Menu />,
+  },
+]);
+
+function App() {
+  return <RouterProvider router={router}></RouterProvider>;
+}
