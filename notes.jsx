@@ -617,15 +617,35 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <Home />,
-  },
-  {
-    path: "/menu",
-    element: <Menu />,
+    // routes that dont have a path is considered as Layout Route
+    element: <AppLayout />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/menu",
+        element: <Menu />,
+      },
+    ],
   },
 ]);
 
 function App() {
   return <RouterProvider router={router}></RouterProvider>;
+}
+
+// to apply our routes
+function AppLayout() {
+  return (
+    <div>
+      <Header />
+      <main>
+        <h1>Content</h1>
+        <Outlet />
+      </main>
+      <CartOverview />
+    </div>
+  );
 }
