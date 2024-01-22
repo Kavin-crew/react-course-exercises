@@ -670,3 +670,11 @@ import { loader as menuLoader } from "./features/menu/Menu";
 // },
 
 // 3. get the data using the cutom hook useLoaderData
+const menu = useLoaderData();
+
+////////////////////
+// Loader
+///////////////////
+// to get the state of processing on the fetching data
+const navigation = useNavigation();
+const isLoading = navigation.state === "loading";
