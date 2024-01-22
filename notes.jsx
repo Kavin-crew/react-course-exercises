@@ -678,3 +678,12 @@ const menu = useLoaderData();
 // to get the state of processing on the fetching data
 const navigation = useNavigation();
 const isLoading = navigation.state === "loading";
+
+////////////////////
+// Error handling in routes
+///////////////////
+// element: <AppLayout />,
+// errorElement: <Error />,
+
+// in our Error component. we can simple add the hook below to access the error message
+const error = useRouteError();
