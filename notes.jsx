@@ -649,3 +649,24 @@ function AppLayout() {
     </div>
   );
 }
+
+////////////////////
+// React Router Loader
+///////////////////
+// 1. Go to the component and create a loader function for fetch data
+export async function loader() {
+  const menu = await getMenu();
+  return menu;
+}
+
+// 2. import the loader
+import { loader as menuLoader } from "./features/menu/Menu";
+
+// in the route
+// {
+//   path: "/menu",
+//   element: <Menu />,
+//   loader: menuLoader,
+// },
+
+// 3. get the data using the cutom hook useLoaderData
