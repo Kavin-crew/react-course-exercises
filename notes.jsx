@@ -687,3 +687,43 @@ const isLoading = navigation.state === "loading";
 
 // in our Error component. we can simple add the hook below to access the error message
 const error = useRouteError();
+
+////////////////////
+// React Router Actions
+///////////////////
+// loader - is to read data
+// action - write data/mutate data on the server, a state that stored on a server
+
+// to create an action
+import { Form } from "react-router-dom";
+
+<Form method="POST">{/* fields here... */}</Form>;
+
+export async function action({ request }) {
+  const formData = await request.formData();
+  const data = Object.fromEntries(formData);
+
+  const order = {
+    ...data,
+    cart: JSON.parse(data.cart),
+    priority: data.priority === "on",
+  };
+
+  const newOrder = await createOrder(order);
+
+  return redirect(`/order/${newOrder.id}`);
+}
+
+// next is to connect it to our routes
+import { action as createOrderAction } from "./features/order/CreateOrder";
+
+// {
+//     path: '/order/new',
+//     element: <CreateOrder />,
+//     action: createOrderAction,
+// },
+
+// alternative way, instead of using the form component of the react router, we can use a hidden fields inside the form
+<input type="hidden" name="cart" value={JSON.stringify(cart)} />;
+
+// alternative way for navigating to other  page instead of using useNavigate hook, we can use redirect() from react router
