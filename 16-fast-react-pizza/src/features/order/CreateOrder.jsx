@@ -2,6 +2,7 @@
 // import { useState } from 'react';
 import { Form, redirect, useActionData, useNavigation } from 'react-router-dom';
 import { createOrder } from '../../services/apiRestaurant';
+import Button from '../../ui/Button';
 
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) => /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/.test(str);
@@ -79,12 +80,8 @@ function CreateOrder() {
 
                 <div>
                     <input className="input" type="hidden" name="cart" value={JSON.stringify(cart)} />
-                    <button
-                        className="rounded-full bg-yellow-500 px-4 py-3 font-semibold uppercase tracking-wide text-stone-800 hover:bg-yellow-300 transition-all duration-300 focus:bg-yellow-300 focus:outline-none focus:ring focus:ring-yellow-300 focus:ring-offset-2 disabled:cursor-not-allowed inline-block"
-                        disabled={isSubmitting}
-                    >
-                        {isSubmitting ? 'Placing order...' : 'Order Now'}
-                    </button>
+                    {/*eslint-disable-next-line*/}
+                    <Button disabled={isSubmitting}>{isSubmitting ? 'Placing order...' : 'Order Now'}</Button>
                 </div>
             </Form>
         </div>
