@@ -47,13 +47,13 @@ function CreateOrder() {
             <Form method="POST">
                 <div>
                     <label>First Name</label>
-                    <input type="text" name="customer" required />
+                    <input className="input" type="text" name="customer" required />
                 </div>
 
                 <div>
                     <label>Phone number</label>
                     <div>
-                        <input type="tel" name="phone" required />
+                        <input className="input" type="tel" name="phone" required />
                     </div>
                     {formErrors?.phone && <p>{formErrors.phone}</p>}
                 </div>
@@ -61,12 +61,7 @@ function CreateOrder() {
                 <div>
                     <label>Address</label>
                     <div>
-                        <input
-                            className="rounded-full border border-stone-200 px-4 py-2 text-sm transition-all duration-300 placeholder:text-stone-400 focus:outline-none focus:ring focus:ring-yellow-400 w-full md:px-6 md:py-3"
-                            type="text"
-                            name="address"
-                            required
-                        />
+                        <input className="input" type="text" name="address" required />
                     </div>
                 </div>
 
@@ -83,7 +78,7 @@ function CreateOrder() {
                 </div>
 
                 <div>
-                    <input type="hidden" name="cart" value={JSON.stringify(cart)} />
+                    <input className="input" type="hidden" name="cart" value={JSON.stringify(cart)} />
                     <button
                         className="rounded-full bg-yellow-500 px-4 py-3 font-semibold uppercase tracking-wide text-stone-800 hover:bg-yellow-300 transition-all duration-300 focus:bg-yellow-300 focus:outline-none focus:ring focus:ring-yellow-300 focus:ring-offset-2 disabled:cursor-not-allowed inline-block"
                         disabled={isSubmitting}
