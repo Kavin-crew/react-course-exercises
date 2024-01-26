@@ -24,7 +24,7 @@ function CreateUser() {
             {username !== '' && (
                 <div>
                     {/*eslint-disable-next-line no-use-before-define */}
-                    <Button>Start ordering</Button>
+                    <Button type="primary">Start ordering</Button>
                 </div>
             )}
         </form>

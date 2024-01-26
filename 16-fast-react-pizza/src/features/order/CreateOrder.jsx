@@ -81,7 +81,9 @@ function CreateOrder() {
                 <div>
                     <input className="input" type="hidden" name="cart" value={JSON.stringify(cart)} />
                     {/*eslint-disable-next-line*/}
-                    <Button disabled={isSubmitting}>{isSubmitting ? 'Placing order...' : 'Order Now'}</Button>
+                    <Button disabled={isSubmitting} type="primary">
+                        {isSubmitting ? 'Placing order...' : 'Order Now'}
+                    </Button>
                 </div>
             </Form>
         </div>
