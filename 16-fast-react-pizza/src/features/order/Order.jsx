@@ -48,13 +48,13 @@ function Order() {
     const deliveryIn = calcMinutesLeft(estimatedDelivery);
 
     return (
-        <div>
-            <div>
-                <h2>Status</h2>
+        <div className="py-4 px-6 space-y-8">
+            <div className="flex items-center justify-between flex-wrap">
+                <h2 className="text-xl font-semibold">Order #{id} status</h2>
 
-                <div>
-                    {priority && <span>Priority</span>}
-                    <span>{status} order</span>
+                <div className="space-x-2">
+                    {priority && <span className="rounded-full bg-red-800 py-1 px-3 text-sm uppercase text-red-50 tracking-wide">Priority </span>}
+                    <span className="rounded-full bg-green-600 py-1 px-3 text-sm uppercase text-green-50 tracking-wide">{status} order</span>
                 </div>
             </div>
 
