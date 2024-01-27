@@ -48,21 +48,21 @@ function CreateOrder() {
             <Form method="POST">
                 <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
                     <label className="sm:basis-40">First Name</label>
-                    <input className="input" type="text" name="customer" required />
+                    <input className="input grow" type="text" name="customer" required />
                 </div>
 
                 <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
-                    <label>Phone number</label>
+                    <label className="sm:basis-40">Phone number</label>
                     <div className="grow">
-                        <input className="input" type="tel" name="phone" required />
-                        {formErrors?.phone && <p>{formErrors.phone}</p>}
+                        <input className="input w-full" type="tel" name="phone" required />
+                        {formErrors?.phone && <p className="mt-2 rounded-full bg-red-200 text-red-700 text-sm px-2 py-1">{formErrors.phone}</p>}
                     </div>
                 </div>
 
                 <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
-                    <label>Address</label>
+                    <label className="sm:basis-40">Address</label>
                     <div className="grow">
-                        <input className="input" type="text" name="address" required />
+                        <input className="input w-full" type="text" name="address" required />
                     </div>
                 </div>
 
@@ -75,7 +75,9 @@ function CreateOrder() {
                         // value={withPriority}
                         // onChange={(e) => setWithPriority(e.target.checked)}
                     />
-                    <label htmlFor="priority">Want to yo give your order priority?</label>
+                    <label htmlFor="priority" className="font-medium">
+                        Want to yo give your order priority?
+                    </label>
                 </div>
 
                 <div>
