@@ -583,7 +583,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 // 2. Action creators are automatically createad
 // 3. Automatic setup of thunk middleware and DevTools
 
-// npm i @reduxjs/toolkit
+// npm i @reduxjs/toolkit react-redux
 
 ////////////////////
 // Context vs Redux
@@ -727,3 +727,50 @@ import { action as createOrderAction } from "./features/order/CreateOrder";
 <input type="hidden" name="cart" value={JSON.stringify(cart)} />;
 
 // alternative way for navigating to other  page instead of using useNavigate hook, we can use redirect() from react router
+
+////////////////////
+// React Toolkit
+///////////////////
+/////// to setup react toolkit, follow the steps below
+////// create this for one of our slice, example below
+// const initialState = {
+//   username: "",
+// };
+
+const userSlice = createSlice({
+  name: "user",
+  initialState,
+  reducers: {
+    updateName(state, action) {
+      state.updateName = action.payload;
+    },
+  },
+});
+export const { updateName } = userSlice.actions;
+
+////// create a file named store.js file inside the src folder
+import { configureStore } from "@reduxjs/toolkit";
+import userReducer from "./features/user/userSlice";
+
+// const store = configureStore({
+//     reducer: {
+//         user: userReducer,
+//     },
+// });
+
+// export default store;
+
+////// go to the topmost of our component tree which is main.js
+import { Provider } from "react-redux";
+import store from "./store.js";
+
+<React.StrictMode>
+  <Provider store={store}>
+    <App />
+  </Provider>
+</React.StrictMode>;
+
+////// as of now, the slice can be accessable, so lets try to consume and access data
+import { useSelector } from "react-redux";
+
+const username = useSelector((state) => state.user.username);
