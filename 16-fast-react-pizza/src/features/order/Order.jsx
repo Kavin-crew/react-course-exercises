@@ -1,8 +1,9 @@
 /*eslint no-unused-vars: "warn"*/
 // Test ID: IIDSAT
-import { useLoaderData, useParams } from 'react-router-dom';
+import { useLoaderData } from 'react-router-dom';
 import { getOrder } from '../../services/apiRestaurant';
 import { calcMinutesLeft, formatCurrency, formatDate } from '../../utils/helpers';
+import OrderItem from './OrderItem';
 
 //dummy data for testing
 // const order = {
@@ -49,7 +50,7 @@ function Order() {
 
     return (
         <div className="py-4 px-6 space-y-8">
-            <div className="flex items-center justify-between flex-wrap">
+            <div className="flex items-center justify-between flex-wrap gap-2">
                 <h2 className="text-xl font-semibold">Order #{id} status</h2>
 
                 <div className="space-x-2">
@@ -58,15 +59,23 @@ function Order() {
                 </div>
             </div>
 
-            <div>
-                <p>{deliveryIn >= 0 ? `Only ${calcMinutesLeft(estimatedDelivery)} minutes left 😃` : 'Order should have arrived'}</p>
-                <p>(Estimated delivery: {formatDate(estimatedDelivery)})</p>
+            <div className="flex flex-wrap items-center justify-between gap-2 bg-stone-300 px-6 py-5">
+                <p className="font-medium">
+                    {deliveryIn >= 0 ? `Only ${calcMinutesLeft(estimatedDelivery)} minutes left 😃` : 'Order should have arrived'}
+                </p>
+                <p className="text-xs text-stone-500">(Estimated delivery: {formatDate(estimatedDelivery)})</p>
             </div>
 
-            <div>
-                <p>Price pizza: {formatCurrency(orderPrice)}</p>
-                {priority && <p>Price priority: {formatCurrency(priorityPrice)}</p>}
-                <p>To pay on delivery: {formatCurrency(orderPrice + priorityPrice)}</p>
+            <ul className="divide-y border-b border-t divide-stone-300">
+                {cart.map((item) => (
+                    <OrderItem item={item} key={item.pizzaId} />
+                ))}
+            </ul>
+
+            <div className="space-y-2 bg-stone-300 px-6 py-5">
+                <p className="text-sm font-medium text-stone-600">Price pizza: {formatCurrency(orderPrice)}</p>
+                {priority && <p className="text-sm font-medium text-stone-600">Price priority: {formatCurrency(priorityPrice)}</p>}
+                <p className="font-bold">To pay on delivery: {formatCurrency(orderPrice + priorityPrice)}</p>
             </div>
         </div>
     );
