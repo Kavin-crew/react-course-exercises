@@ -746,6 +746,8 @@ const userSlice = createSlice({
     },
   },
 });
+
+// export the action creators
 export const { updateName } = userSlice.actions;
 
 ////// create a file named store.js file inside the src folder
