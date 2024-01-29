@@ -742,7 +742,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     updateName(state, action) {
-      state.updateName = action.payload;
+      state.username = action.payload;
     },
   },
 });
@@ -770,7 +770,16 @@ import store from "./store.js";
   </Provider>
 </React.StrictMode>;
 
-////// as of now, the slice can be accessable, so lets try to consume and access data
+////// as of now, the slice can be accessable, so lets try to consume and access/Read/retrieve data
 import { useSelector } from "react-redux";
 
 const username = useSelector((state) => state.user.username);
+
+/////// in dispatching an action for example we want to update any properties in our store we use useDispatch
+//we will use the action creator function
+import { useDispatch } from "react-redux";
+
+// in this example, we import the method which is the updateName in our of our slice
+import { updateName } from "./userSlice";
+// const dispatch = useDispatch();
+// dispatch(updateName(username));
