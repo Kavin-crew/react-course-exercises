@@ -4,7 +4,7 @@
 import { Link } from 'react-router-dom';
 
 /* eslint-disable react/prop-types */
-function Button({ children, disabled, to, type }) {
+function Button({ children, disabled, to, type, onClick }) {
     const base =
         'rounded-full text-sm bg-yellow-500  font-semibold uppercase tracking-wide text-stone-800 hover:bg-yellow-300 transition-all duration-300 focus:bg-yellow-300 focus:outline-none focus:ring focus:ring-yellow-300 focus:ring-offset-2 disabled:cursor-not-allowed inline-block ';
 
@@ -21,6 +21,12 @@ function Button({ children, disabled, to, type }) {
                 {children}
             </Link>
         );
+
+    if (onclick) {
+        <button disabled={disabled} onClick={onClick} className={styles[type]}>
+            {children}
+        </button>;
+    }
 
     return (
         <button disabled={disabled} className={styles[type]}>
