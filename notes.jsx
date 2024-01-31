@@ -785,3 +785,18 @@ import { useDispatch } from "react-redux";
 import { updateName } from "./userSlice";
 // const dispatch = useDispatch();
 // dispatch(updateName(username));
+
+/////////////////
+// Reusing the reducer
+/////////////////
+// decreaseItemQuantity(state, action) {
+//     // decrease the quantity
+//     // payload = pizzaId
+//     const item = state.cart.find((item) => item.pizzaId === action.payload);
+
+//     item.quantity--;
+//     item.totalPrice = item.quantity * item.unitPrice;
+
+//     // calling the deleteItem
+//     if (item.quantity === 0) cartSlice.caseReducers.deleteItem(state, action);
+// }
