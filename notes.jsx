@@ -845,3 +845,18 @@ useEffect(
   },
   [fetcher]
 );
+
+////////use fetcher into for updating
+// it will not navigate away, instead it will revalidate
+return (
+  <fetcher.Form method="PATCH">
+    <Button type="primary">Make priority</Button>
+  </fetcher.Form>
+);
+// to update to property/form/data, we need to wire things up and make an action
+// go to the routes and add action to that route to connect the fetcher and the action
+export async function action({ request, params }) {
+  const data = { priority: true };
+  await updateOrder(params.orderId, data);
+  return null;
+}
