@@ -10,6 +10,7 @@ import { useState } from 'react';
 import store from '../../store';
 import { useDispatch } from 'react-redux';
 import { formatCurrency } from '../../utils/helpers';
+import { fetchAddress } from '../user/userSlice';
 
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) => /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/.test(str);
@@ -62,6 +63,8 @@ function CreateOrder() {
     return (
         <div className="px-4 py-6">
             <h2 className="mb-8 text-xl font-semibold">Ready to order? Let&apos;s go!</h2>
+
+            <button onClick={() => dispatch(fetchAddress())}>Get position</button>
 
             {/* <Form method="POST" action="/order/new"> */}
             <Form method="POST">

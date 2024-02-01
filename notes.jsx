@@ -800,3 +800,33 @@ import { updateName } from "./userSlice";
 //     // calling the deleteItem
 //     if (item.quantity === 0) cartSlice.caseReducers.deleteItem(state, action);
 // }
+
+/////////////////
+// Redux Toolkit Thunk
+/////////////////
+// it recives 2 things
+// 1. action
+// 2. an async function that will return a payload
+
+// this will also become an action creator function
+// it will also produce pending, fullfiled, rejected state
+import { createAsyncThunk } from "@reduxjs/toolkit";
+
+export const fetchAddress = createAsyncThunk(
+  "user/fetchAddress",
+  async function () {
+    // 1) We get the user's geolocation position
+    const positionObj = await getPosition();
+    const position = {
+      latitude: positionObj.coords.latitude,
+      longitude: positionObj.coords.longitude,
+    };
+
+    // 2) Then we use a reverse geocoding API to get a description of the user's address, so we can display it the order form, so that the user can correct it if wrong
+    const addressObj = await getAddress(position);
+    const address = `${addressObj?.locality}, ${addressObj?.city} ${addressObj?.postcode}, ${addressObj?.countryName}`;
+
+    // 3) Then we return an object with the data that we are interested in
+    return { position, address };
+  }
+);
