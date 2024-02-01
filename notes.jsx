@@ -860,3 +860,21 @@ export async function action({ request, params }) {
   await updateOrder(params.orderId, data);
   return null;
 }
+
+/////////////////
+// CSR or SSR
+////////////////
+// Client side rendering
+// example: React
+// 1. plain react
+// 2. use to build SPA
+// 3. all HTML is rendered on client
+// 4. All javascript needs to be downloaded before apps start running: bad for performance
+// 5. One perfect use case: apps that are used "internally" as tools inside companies, that are entirely hidden behind the login
+
+// Server side rendering
+// example: Next.js, remix.js
+// 1. used to build multi-page application MPAs
+// 2. some HTML is rendered in the client
+// 3. more performant and less javascript to download
+// 4. React team is moving more and more in this direction
