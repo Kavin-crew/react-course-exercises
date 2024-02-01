@@ -1,9 +1,10 @@
 /*eslint no-unused-vars: "warn"*/
 // Test ID: IIDSAT
-import { useLoaderData } from 'react-router-dom';
+import { useFetcher, useLoaderData } from 'react-router-dom';
 import { getOrder } from '../../services/apiRestaurant';
 import { calcMinutesLeft, formatCurrency, formatDate } from '../../utils/helpers';
 import OrderItem from './OrderItem';
+import { useEffect } from 'react';
 
 /*
 dummy data for testing
@@ -46,6 +47,15 @@ const order = {
 function Order() {
     const order = useLoaderData();
 
+    const fetcher = useFetcher();
+
+    useEffect(
+        function () {
+            if (!fetcher.data && fetcher.state === 'idle') fetcher.load('/menu');
+        },
+        [fetcher]
+    );
+
     // Everyone can search for all orders, so for privacy reasons we're gonna gonna exclude names or address, these are only for the restaurant staff
     const { id, status, priority, priorityPrice, orderPrice, estimatedDelivery, cart } = order;
     const deliveryIn = calcMinutesLeft(estimatedDelivery);
@@ -56,7 +66,9 @@ function Order() {
                 <h2 className="text-xl font-semibold">Order #{id} status</h2>
 
                 <div className="space-x-2">
-                    {priority && <span className="rounded-full bg-red-800 py-1 px-3 text-sm uppercase text-red-50 tracking-wide">Priority </span>}
+                    {priority && (
+                        <span className="rounded-full bg-red-800 py-1 px-3 text-sm uppercase text-red-50 tracking-wide text-center">Priority </span>
+                    )}
                     <span className="rounded-full bg-green-600 py-1 px-3 text-sm uppercase text-green-50 tracking-wide">{status} order</span>
                 </div>
             </div>
@@ -70,7 +82,12 @@ function Order() {
 
             <ul className="divide-y border-b border-t divide-stone-300">
                 {cart.map((item) => (
-                    <OrderItem item={item} key={item.pizzaId} />
+                    <OrderItem
+                        item={item}
+                        key={item.pizzaId}
+                        isLoadingIngredients={fetcher.state === 'loading'}
+                        ingredients={fetcher?.data?.find((el) => el.id === item.pizzaId).ingredients ?? []}
+                    />
                 ))}
             </ul>
 

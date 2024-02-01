@@ -830,3 +830,18 @@ export const fetchAddress = createAsyncThunk(
     return { position, address };
   }
 );
+
+/////////////////
+// useFetcher
+/////////////////
+//it allow us to use a logic from another route
+import { useFetcher } from "react-router-dom";
+
+const fetcher = useFetcher();
+
+useEffect(
+  function () {
+    if (!fetcher.data && fetcher.state === "idle") fetcher.load("/menu");
+  },
+  [fetcher]
+);
