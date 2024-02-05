@@ -76,7 +76,7 @@ function CabinTable() {
     data: cabins,
     error,
   } = useQuery({
-    queryKey: ["cabin"],
+    queryKey: ["cabins"],
     -- for getCabins function, please refer above code
     queryFn: getCabins,
   });
@@ -84,3 +84,36 @@ function CabinTable() {
   const { name, maxCapacity, regularPrice, discount, image } = cabins;
   
 }
+------------------------------------------------
+-- mutating data
+------------------------------------------------
+-- place this in our helper/services folder/file
+export async function deleteCabin(id) {
+  const { data, error } = await supabase.from("cabins").delete().eq("id", id);
+
+  if (error) {
+    console.error(error);
+    throw new Error("Cabin cannot be deleted");
+  }
+
+  return data;
+}
+------------------------------------------------
+-- go to our component, then use the deleteCabin funtion in the useMutation function
+import {useMutation} from '@tanstack/react-query'
+
+-- a hook that will connect to our client/supabase client
+  const queryClient = useQueryClient();
+
+  const { isLoading, mutate } = useMutation({
+    mutationFn: (id) => deleteCabin(id),
+    -- to refresh/invalidate the query
+    -- it will refresh the changes after deleting an item
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["cabins"],
+      });
+    },
+  });
+
+<button onClick={() => mutate(cabinId)}>Delete</button>
