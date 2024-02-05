@@ -48,7 +48,8 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 60 * 1000,
+      -- staleTime: 60 * 1000,
+      staleTime: 0,
     },
   },
 });
@@ -61,4 +62,25 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
       </QueryClientProvider>
   );
+}
+
+------------------------------------------------
+-- fetching data
+------------------------------------------------
+-- in the component we want to fecth the data
+import { useQuery } from "@tanstack/react-query";
+
+function CabinTable() {
+  const {
+    isLoading,
+    data: cabins,
+    error,
+  } = useQuery({
+    queryKey: ["cabin"],
+    -- for getCabins function, please refer above code
+    queryFn: getCabins,
+  });
+
+  const { name, maxCapacity, regularPrice, discount, image } = cabins;
+  
 }
