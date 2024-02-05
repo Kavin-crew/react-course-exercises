@@ -152,3 +152,18 @@ const queryClient = useQueryClient();
 <form onSubmit={handleSubmit(onSubmit)}>
   <input type="text" id="name" {...register("name")} />;
 </form>;
+
+------------------------------------------------
+-- handling errors 
+------------------------------------------------
+function onError(errors) {
+  console.log(errors);
+}
+
+<form onSubmit={handleSubmit(onSubmit, onError)}>
+  <input
+    type="text"
+    id="name"
+    {...register("name", { required: "This field is required" })}
+  />
+</form>;
