@@ -878,3 +878,19 @@ export async function action({ request, params }) {
 // 2. some HTML is rendered in the client
 // 3. more performant and less javascript to download
 // 4. React team is moving more and more in this direction
+
+/////////////////
+// React Hook form
+////////////////
+// npm i react-hook- form@7
+import { useForm } from "react-hook-form";
+
+const { register, handleSubmit } = useForm();
+
+function onSubmit(data) {
+  console.log(data);
+}
+
+<form onSubmit={handleSubmit(onSubmit)}>
+  <input type="text" id="name" {...register("name")} />;
+</form>;
