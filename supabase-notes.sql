@@ -85,7 +85,7 @@ function CabinTable() {
   
 }
 ------------------------------------------------
--- mutating data
+-- mutating data - Delete 
 ------------------------------------------------
 -- place this in our helper/services folder/file
 export async function deleteCabin(id) {
@@ -114,6 +114,41 @@ import {useMutation} from '@tanstack/react-query'
         queryKey: ["cabins"],
       });
     },
+    onError: (err) => console.log(err.message)
   });
 
 <button onClick={() => mutate(cabinId)}>Delete</button>
+
+------------------------------------------------
+-- mutating data - Create 
+------------------------------------------------
+React Hook form
+npm i react-hook- form@7
+
+import { useForm } from "react-hook-form";
+
+const { register, handleSubmit, reset } = useForm();
+
+const queryClient = useQueryClient();
+
+  const { isLoading, mutate } = useMutation({
+    -- createCabin is a function in the service api file
+    -- mutationFn: createCabin,
+    mutationFn: (newData) => createCabin(newData),
+    onSuccess: () => {
+      toast.success("New cabin successfully created");
+      queryClient.invalidateQueries({
+        queryKey: ["cabins"],
+      });
+      reset();
+    },
+    onError: (err) => toast.error(err.message),
+  });
+
+  function onSubmit(data) {
+    mutate(data);
+  }
+
+<form onSubmit={handleSubmit(onSubmit)}>
+  <input type="text" id="name" {...register("name")} />;
+</form>;
