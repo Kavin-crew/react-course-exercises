@@ -156,6 +156,9 @@ const queryClient = useQueryClient();
 ------------------------------------------------
 -- handling errors 
 ------------------------------------------------
+const { formState } = useForm();
+const { errors } = formState;
+
 function onError(errors) {
   console.log(errors);
 }
@@ -166,4 +169,5 @@ function onError(errors) {
     id="name"
     {...register("name", { required: "This field is required" })}
   />
+  {errors?.name?.message && <Error>{errors.name.message}</Error>}
 </form>;
