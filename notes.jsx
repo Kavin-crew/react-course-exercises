@@ -894,3 +894,40 @@ function onSubmit(data) {
 <form onSubmit={handleSubmit(onSubmit)}>
   <input type="text" id="name" {...register("name")} />;
 </form>;
+
+/////////////////
+// Render patter - inverse render
+////////////////
+// we want to display different data/component from a List component, we will use render pattern
+
+// calling/executing the List component with different data/component
+// we add the render prop then it will accept a function/instructions
+{
+  /* <>
+<List
+  title="Products"
+  items={products}
+  render={(product) => (
+    <ProductItem key={product.productName} product={product} />
+  )}
+/>
+
+<List
+  title="Companies"
+  items={companies}
+  render={(company) => (
+    <CompanyItem
+      key={company.companyName}
+      company={company}
+      defaultVisibility={false}
+    />
+  )}
+</> */
+}
+
+// in the List component, we accept the render as props
+function List({ title, items, render }) {
+  {
+    isOpen && <ul className="list">{displayItems.map(render)}</ul>;
+  }
+}
