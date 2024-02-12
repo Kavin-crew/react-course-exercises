@@ -15,5 +15,5 @@ export function useOutsideClick(handler) {
     },
     [handler, ref]
   );
-  return { ref };
+  return ref;
 }
