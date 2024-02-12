@@ -15,7 +15,7 @@ const StyledSidebar = styled.aside`
 `;
 
 function Sidebar() {
-  const { isLoading, cabins } = useCabins();
+  // const { isLoading, cabins } = useCabins();
 
   return (
     <StyledSidebar>
