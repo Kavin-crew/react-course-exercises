@@ -282,3 +282,13 @@ export async function getBookings({ filter, sortBy }) {
 import { useQueryClient } from "@tanstack/react-query";
 
 const queryClient = useQueryClient();
+
+-- // PRE-FETCHING
+const pageCount = Math.ceil(page / PAGE_SIZE);
+
+-- // if we are in the last page, we cont prefetch + 1 since its the last
+if (page < pageCount)
+queryClient.prefetchQuery({
+  queryKey: ["bookings", filter, sortBy, page + 1],
+  queryFn: () => getBookings({ filter, sortBy, page: page + 1 }),
+});
