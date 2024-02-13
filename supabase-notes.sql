@@ -275,3 +275,10 @@ export async function getBookings({ filter, sortBy }) {
 
   return data;
 }
+
+------------------------------------------------
+-- pre-fetching
+------------------------------------------------
+import { useQueryClient } from "@tanstack/react-query";
+
+const queryClient = useQueryClient();
