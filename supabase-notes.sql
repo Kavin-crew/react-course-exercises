@@ -227,3 +227,51 @@ export async function createCabin(newCabin) {
   type="file"
   {...register("image", { required: "This field is required" })}
 />
+
+------------------------------------------------
+-- filtering in server side/filter in api 
+------------------------------------------------
+-- custom hook using the react query
+export function useBookings() {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  -- // FILTER
+  const filterValue = searchParams.get("status");
+  const filter =
+    !filterValue || filterValue === "all"
+      ? null
+      : { field: "status", value: filterValue };
+  -- // : { field: "status", value: filterValue, method: "gte" };
+
+  const {
+    isLoading,
+    data: bookings,
+    error,
+  } = useQuery({
+    -- query key is like the dependency array to refetch data once it has changes
+    queryKey: ["bookings", filter],
+    queryFn: () => getBookings({ filter }),
+  });
+
+  return { isLoading, bookings, error };
+}
+
+----------------------
+-- reading data in supabase w/ filter
+export async function getBookings({ filter, sortBy }) {
+  let query = supabase
+    .from("bookings")
+    .select("*, cabins(name), guests(fullName, email)");
+
+  if (filter !== null)
+    query = query[filter.method || "eq"](filter.field, filter.value);
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.error(error);
+    throw new Error("Bookings could not be loaded");
+  }
+
+  return data;
+}
