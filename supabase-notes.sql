@@ -292,3 +292,26 @@ queryClient.prefetchQuery({
   queryKey: ["bookings", filter, sortBy, page + 1],
   queryFn: () => getBookings({ filter, sortBy, page: page + 1 }),
 });
+
+
+------------------------------------------------
+-- sample mutation and revalidation
+------------------------------------------------
+
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { updateBooking } from "../../services/apiBookings";
+import { useNavigate } from "react-router-dom";
+
+export function useCheckin() {
+  const queryClient = useQueryClient();
+  const nagivate = useNavigate();
+
+  const { mutate: checkin, isLoading: isCheckingIn } = useMutation({
+    mutationFn: (bookingId) =>
+      updateBooking(bookingId, { status: "checked-in", isPaid: true }),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ active: true });
+      nagivate("/");
+    },
+  });
+}
