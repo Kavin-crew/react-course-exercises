@@ -315,3 +315,54 @@ export function useCheckin() {
     },
   });
 }
+
+------------------------------------------------
+-- Login
+------------------------------------------------
+-----------to connect with supabase
+import supabase from "./supabase";
+
+export async function login({ email, password }) {
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+}
+-----------custom hook to access login
+import { useMutation } from "@tanstack/react-query";
+import { login as loginApi } from "../../services/apiAuth";
+import { useNavigate } from "react-router-dom";
+
+export function useLogin() {
+  const navigate = useNavigate();
+
+  const { mutate: login, isLoading } = useMutation({
+    mutationFn: ({ email, password }) => loginApi({ email, password }),
+    onSuccess: (data) => {
+      navigate("/dashboard");
+    },
+    onError: (err) => console.error(err),
+  });
+
+  return { login, isLoading };
+}
+
+-----------attempt to login to our app
+import { useLogin } from "./useLogin";
+
+const [email, setEmail] = useState("admin@sample.com");
+const [password, setPassword] = useState("admin");
+const { login, isLoading } = useLogin();
+
+function handleSubmit(e) {
+  e.preventDefault();
+
+  if (!email || !password) return;
+  login({ email, password });
+}
