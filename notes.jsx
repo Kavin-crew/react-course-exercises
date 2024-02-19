@@ -931,3 +931,98 @@ function List({ title, items, render }) {
     isOpen && <ul className="list">{displayItems.map(render)}</ul>;
   }
 }
+
+/////////////////
+// Dark Mode
+////////////////
+// in our css file
+// const GlobalStyles = createGlobalStyle`
+// :root {
+//   &, &.ligth-mode{
+//   /* Grey */
+//   --color-grey-0: #fff;
+//   /* add more here... */
+
+//   /* light mode */
+//   --image-grayscale: 0;
+//   --image-opacity: 100%;
+//   }
+
+//   &.dark-mode{
+//     /* Grey */
+//     --color-grey-0: #18212f;
+//     /* add more here... */
+
+//     --image-grayscale: 10%;
+//     --image-opacity: 90%;
+//   }
+
+//   /* DEFAULT css here, example font-size, border radius, etc */
+// }
+
+///////////Create a component for the button
+import { HiOutlineMoon, HiOutlineSun } from "react-icons/hi2";
+import ButtonIcon from "./ButtonIcon";
+
+function DarkModeToggle() {
+  // use the context we created below
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
+
+  return (
+    <ButtonIcon onClick={toggleDarkMode}>
+      {isDarkMode ? <HiOutlineSun /> : <HiOutlineMoon />}
+    </ButtonIcon>
+  );
+}
+// export default DarkModeToggle;
+
+///////////Create a context
+import { createContext } from "react";
+import { useLocalStorageState } from "../hooks/useLocalStorageState";
+import { useContext } from "react";
+
+const DarkModeContext = createContext();
+
+function DarkModeProvider({ children }) {
+  //we can use directly useState, but this case we used localstorage
+  const [isDarkMode, setIsDarkMode] = useLocalStorageState(false, "isDarkMode");
+
+  useEffect(
+    function () {
+      if (isDarkMode) {
+        document.documentElement.classList.add("dark-mode");
+        document.documentElement.classList.remove("light-mode");
+      } else {
+        document.documentElement.classList.add("light-mode");
+        document.documentElement.classList.remove("dark-mode");
+      }
+    },
+    [isDarkMode]
+  );
+
+  function toggleDarkMode() {
+    setIsDarkMode((isDark) => !isDark);
+  }
+
+  return (
+    <DarkModeContext.Provider value={{ isDarkMode, toggleDarkMode }}>
+      {children}
+    </DarkModeContext.Provider>
+  );
+}
+
+// custom hook, directly consumes the context
+function useDarkMode() {
+  const context = useContext(DarkModeContext);
+  if (context === undefined)
+    throw new Error("DarkModeContext was used outside of DarkModeProvider");
+
+  return context;
+}
+
+export { DarkModeProvider, useDarkMode };
+
+/////////// provide our ContextProvider in the tree
+function App() {
+  return <DarkModeProvider>{/* child components here */}</DarkModeProvider>;
+}
