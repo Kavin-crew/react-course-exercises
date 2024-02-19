@@ -1031,3 +1031,45 @@
 // // Recharts
 // ////////////////
 // // npm i recharts
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+import { eachDayOfInterval, format, isSameDay, subDays } from "date-fns";
+
+return (
+  <StyledSalesChart>
+    <Heading as="h2">Sales</Heading>
+
+    <ResponsiveContainer height={300} width="100%">
+      <AreaChart data={data}>
+        <XAxis
+          dataKey="label"
+          tick={{ fill: colors.text }}
+          tickLine={{ stroke: colors.text }}
+        />
+        <YAxis
+          unit="$"
+          tick={{ fill: colors.text }}
+          tickLine={{ stroke: colors.text }}
+        />
+        <CartesianGrid strokeDasharray={4} />
+        <Tooltip contentStyle={{ backgroundColor: colors.background }} />
+        <Area
+          dataKey="totalSales"
+          type="monotone"
+          stroke={colors.totalSales.stroke}
+          fill={colors.totalSales.fill}
+          strokeWidth={2}
+          name="Total sales"
+          unit="$"
+        />
+      </AreaChart>
+    </ResponsiveContainer>
+  </StyledSalesChart>
+);
