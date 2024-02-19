@@ -17,5 +17,5 @@ export function useRecentBookings() {
     queryKey: ["bookings", `last-${numDays}`],
   });
 
-  return { isLoading, bookings };
+  return { isLoading, bookings, numDays };
 }
