@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import toast from "react-hot-toast";
 
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";

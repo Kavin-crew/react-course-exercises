@@ -50,7 +50,7 @@ function CabinRow({ cabin }) {
   } = cabin;
 
   // duplicate
-  const { isCreating, createCabin } = useCreateCabin();
+  const { createCabin } = useCreateCabin();
 
   function handleDuplicate() {
     createCabin({
