@@ -44,7 +44,7 @@ function TodayActivity() {
   return (
     <StyledToday>
       <Row type="horizontal">
-        <Heading as="h2">Today</Heading>
+        <Heading as="h2">Today's activity</Heading>
       </Row>
 
       {!isLoading ? (
