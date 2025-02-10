@@ -1,3 +1,5 @@
+npx create-vite@latest my-react-app --template react
+
 npm i --save-dev vite-plugin-eslint eslint-config-react-app eslint
 
 create a file .eslintrc.json on the root folder and add this code:
