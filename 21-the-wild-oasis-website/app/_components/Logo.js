@@ -2,7 +2,7 @@ import Image from "next/image";
 import logoImg from "@/public/logo.png";
 import Link from "next/link";
 
-function Logo() {
+export default function Logo() {
   return (
     <Link href="/" className="flex items-center gap-4 z-10">
       <Image src={logoImg} height="60" width="60" alt="The Wild Oasis logo" />
@@ -12,5 +12,3 @@ function Logo() {
     </Link>
   );
 }
-
-export default Logo;
