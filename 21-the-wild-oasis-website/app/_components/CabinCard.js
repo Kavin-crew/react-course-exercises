@@ -9,7 +9,10 @@ function CabinCard({ cabin }) {
       <Image
         src={image}
         alt={`Cabin ${name}`}
-        className="flex-1 border-r border-primary-800"
+        width={0}
+        height={0}
+        sizes="100vw"
+        className="flex-1 border-r border-primary-800 object-cover"
       />
 
       <div className="flex-grow">

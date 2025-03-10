@@ -1,11 +1,20 @@
+import connectDB from "@/config/database";
+import Cabin from "@/models/Cabin";
+import CabinCard from "@/app/_components/CabinCard";
+
 export const metadata = {
   title: "Cabins",
 };
 
-export default function page() {
+export default async function Page() {
+  await connectDB();
+  const cabins = await Cabin.find({}).lean();
+
   return (
-    <div>
-      <h1>Cabins Page</h1>
+    <div className="grid grid-cols-3 gap-5">
+      {cabins.map((cabin) => (
+        <CabinCard cabin={cabin} />
+      ))}
     </div>
   );
 }
