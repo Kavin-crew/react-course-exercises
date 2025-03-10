@@ -13,7 +13,7 @@ export default async function Page() {
   return (
     <div className="grid grid-cols-3 gap-5">
       {cabins.map((cabin) => (
-        <CabinCard cabin={cabin} />
+        <CabinCard cabin={cabin} key={cabin.name} />
       ))}
     </div>
   );
