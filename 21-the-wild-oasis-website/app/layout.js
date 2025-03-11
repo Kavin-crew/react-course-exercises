@@ -8,8 +8,6 @@ const josefin = Josefin_Sans({
   weight: "400",
 });
 
-console.log(josefin);
-
 export const metadata = {
   // title: "The wild oasis", //v1
   title: {
