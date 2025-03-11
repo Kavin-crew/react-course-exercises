@@ -1,4 +1,4 @@
-import Loader from "@/app/_components/Loader";
-export default function loading() {
-  return <Loader />;
+import Spinner from "@/app/_components/Spinner";
+export default function Loading() {
+  return <Spinner />;
 }

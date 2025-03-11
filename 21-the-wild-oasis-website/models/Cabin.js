@@ -1,13 +1,27 @@
-import { Int32 } from "bson";
 import { Schema, model, models } from "mongoose";
 
 const CabinSchema = new Schema(
   {
-    name: { type: String, required: true },
-    maxCapacity: { type: Number, required: true },
-    regularPrice: { type: Number, required: true },
-    discount: { type: Number, required: true },
-    image: { type: String, required: true },
+    name: {
+      type: String,
+      required: true,
+    },
+    maxCapacity: {
+      type: Number,
+      required: true,
+    },
+    regularPrice: {
+      type: Number,
+      required: true,
+    },
+    discount: {
+      type: Number,
+      required: true,
+    },
+    image: {
+      type: String,
+      required: true,
+    },
     desciption: { type: String, required: true },
   },
   {

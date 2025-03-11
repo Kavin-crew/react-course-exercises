@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import BackgroundImg from "@/public/bg.png";
 
-export default function Home() {
+export default function HomePage() {
   return (
     <main className="mt-24 h-full">
       <Image
