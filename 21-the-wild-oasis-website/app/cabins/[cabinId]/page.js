@@ -1,26 +1,17 @@
 import { EyeSlashIcon, MapPinIcon, UsersIcon } from "@heroicons/react/24/solid";
-import connectDB from "@/config/database";
-import Cabin from "@/models/Cabin";
 import Image from "next/image";
+import { getCabin, getCabinName } from "@/app/_lib/data-service";
 
 export async function generateMetadata({ params }) {
-  const { name } = await Cabin.findOne({ _id: params.cabinId }).lean();
+  const name = await getCabinName(params.cabinId);
   return { title: `Cabin ${name}` };
 }
 
 export default async function Page({ params }) {
-  await connectDB();
-  const cabin = await Cabin.findOne({ _id: params.cabinId }).lean();
+  const cabin = await getCabin(params.cabinId);
 
-  const {
-    _id: id,
-    name,
-    maxCapacity,
-    regularPrice,
-    discount,
-    image,
-    description,
-  } = cabin || {};
+  const { name, maxCapacity, regularPrice, discount, image, description } =
+    cabin || {};
 
   return (
     <div className="max-w-6xl mx-auto mt-8">

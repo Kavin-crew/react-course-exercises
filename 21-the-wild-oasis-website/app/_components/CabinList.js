@@ -7,7 +7,7 @@ export default async function CabinList() {
   const cabins = await Cabin.find({}).lean();
 
   return (
-    <div className="grid grid-cols-2 gap-5">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
       {cabins.length > 0 &&
         cabins.map((cabin) => <CabinCard cabin={cabin} key={cabin.name} />)}
     </div>
